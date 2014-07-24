@@ -13,7 +13,7 @@
 		<Root level="error">
 			<AppenderRef ref="Console" />
 		</Root>
-		<logger name="net.cme.CMEngine" level="TRACE" />
+		<logger name="net.cme.engine.CMEngine" level="TRACE" />
 		<Root level="ERROR">
 			<AppenderRef ref="CONSOLE" />
 		</Root>

@@ -1,6 +1,4 @@
-#version 330
-
-layout (location = 0) in vec3 position;
+#version 110
 
 void main() {
 	

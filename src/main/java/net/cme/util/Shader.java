@@ -29,8 +29,9 @@ public class Shader {
 
 	public Shader() {
 		program = glCreateProgram();
-
+		
 		if (program == 0) {
+			CMEngine.LOGGER.error("Program could not be created: " + glGetShaderInfoLog(program, 1024));
 			CMEngine.exitOnError(1, new Exception());
 		}
 	}

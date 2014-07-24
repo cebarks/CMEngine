@@ -2,6 +2,7 @@ package net.cme.util;
 
 import java.nio.FloatBuffer;
 import java.nio.IntBuffer;
+import java.util.ArrayList;
 import java.util.List;
 
 import org.lwjgl.BufferUtils;
@@ -16,9 +17,9 @@ public class Util {
 			buffer.put(v.position.y);
 			buffer.put(v.position.z);
 		}
-		
+
 		buffer.flip();
-		
+
 		return buffer;
 	}
 
@@ -36,14 +37,26 @@ public class Util {
 
 	public static IntBuffer intToBuffer(int[] ints) {
 		IntBuffer buffer = BufferUtils.createIntBuffer(ints.length);
-		
+
 		for (int i : ints) {
 			buffer.put(i);
 		}
-		
+
 		buffer.flip();
 
 		return buffer;
+	}
+
+	public static String[] removeEmptyStrings(String... strings) {
+		List<String> nonempty = new ArrayList<String>();
+
+		for (String s : strings) {
+			if (!s.equals("")) {
+				nonempty.add(s);
+			}
+		}
+
+		return nonempty.toArray(new String[0]);
 	}
 
 }

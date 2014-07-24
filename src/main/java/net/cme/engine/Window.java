@@ -28,7 +28,7 @@ public class Window {
 			Display.setDisplayMode(new DisplayMode(width, height));
 			Display.setTitle(title);
 			Display.setVSyncEnabled(vsync);
-			PixelFormat pixelFormat = new PixelFormat(0, 1, 0, 4);
+			PixelFormat pixelFormat = new PixelFormat(8, 8, 0, 4);
 			ContextAttribs contextAttribs = new ContextAttribs(3, 2).withProfileCore(true).withForwardCompatible(true);
 			Display.create(new PixelFormat(), contextAttribs);
 		} catch (LWJGLException e) {

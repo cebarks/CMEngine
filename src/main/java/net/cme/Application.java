@@ -12,18 +12,19 @@ public class Application {
 	public static void main(String[] args) {
 		Engine engine = new Engine();
 		
-		Game game = new Game();
-		World world = new World("test world");
 		Window window = new Window();
 		Camera camera = new Camera();
 		Player player = new Player();
+		Game game = new Game();
+		World world = new World();
 		
-		game.create(engine, "this would be where the game is located");
-		world.create(game);
 		window.create(engine, "hello, world!", 800, 600, 60, true);
 		camera.create(engine, new Vertex(0, 0, 0), new Vertex(0, 0, 0), 68, 0.01f, 100f);
 		player.create(engine);
-	
+		game.create(engine, "this would be where the game is located");
+		world.create(game, "test_arena");
+		
+		engine.setLevel("test_arena");
 		
 		engine.run();
 	}

@@ -1,14 +1,10 @@
 package net.cme.world;
 
 public class World {
-	private final String name;
-	private Game game;
-	
-	public World(String name) {
+	private String name;
+
+	public void create(Game game, String name) {
 		this.name = name;
-	}
-	
-	public void create(Game game) {
 		game.addWorld(this);
 	}
 	

@@ -43,8 +43,16 @@ public class Engine {
 		this.state = state;
 	}
 	
+	public void setLevel(String level) {
+		currentWorld = game.getWorld(level);
+	}
+	
 	public State getState() {
 		return state;
+	}
+	
+	public World getWorld() {
+		return currentWorld;
 	}
 	
 	public void addGame(Game game) {

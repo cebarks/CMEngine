@@ -29,6 +29,7 @@ public class CMEngine implements Runnable {
 		thread = new Thread(this, "CMEngine-0");
 		window = new Window(this, TITLE, WIDTH, HEIGHT, 60, true);
 		camera = new Camera(this, new Vector3(0, 0, 0), new Vector3(0, 0, 0), 68, 0.01f, 100f);
+		run();
 	}
 
 	public void run() {

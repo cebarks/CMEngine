@@ -1,12 +1,12 @@
 package net.cme.engine;
 
-import static org.lwjgl.opengl.GL11.GL_COLOR_BUFFER_BIT;
-import static org.lwjgl.opengl.GL11.GL_DEPTH_BUFFER_BIT;
-import static org.lwjgl.opengl.GL11.glClear;
+import static org.lwjgl.opengl.GL11.*;
 
 import org.lwjgl.LWJGLException;
 import org.lwjgl.opengl.Display;
 import org.lwjgl.opengl.DisplayMode;
+import org.lwjgl.opengl.GLContext;
+import org.lwjgl.opengl.PixelFormat;
 
 public class Window {
 	private CMEngine engine;
@@ -27,10 +27,12 @@ public class Window {
 			Display.setDisplayMode(new DisplayMode(width, height));
 			Display.setTitle(title);
 			Display.setVSyncEnabled(vsync);
-			Display.create();
+			Display.create(new PixelFormat(0, 1, 0, 4));
 		} catch (LWJGLException e) {
-			engine.exitOnError(1, e);
+			CMEngine.exitOnError(1, e);
 		}
+
+		CMEngine.LOGGER.info(String.format("Running on GLVersion: %s", glGetString(GL_VERSION)));
 	}
 
 	public void clear() {

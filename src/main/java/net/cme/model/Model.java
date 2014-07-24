@@ -14,10 +14,12 @@ import static org.lwjgl.opengl.GL20.glDisableVertexAttribArray;
 import static org.lwjgl.opengl.GL20.glEnableVertexAttribArray;
 import static org.lwjgl.opengl.GL20.glVertexAttribPointer;
 
+import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
@@ -74,17 +76,18 @@ public class Model {
 
 	public void parseObj(InputStream stream) {
 		try {
-			Scanner scan = new Scanner(stream);
-
+			BufferedReader scan = new BufferedReader(new InputStreamReader(stream));
 			String line;
-			while ((line = scan.nextLine()) != null) {
-				if (line.startsWith("#"))
+			while ((line = scan.readLine()) != null) {
+				String[] tokens = line.split(" ");
+
+				if (tokens[0].equals("#") || tokens.length == 0 || tokens[0].equals(""))
 					continue;
 
-				if (line.startsWith("v ")) {
-					String[] raw = line.substring(2).split(" ");
-					Vertex vertex = new Vertex(new Vector3(Float.valueOf(raw[0]), Float.valueOf(raw[1]), Float.valueOf(raw[2])));
+				if (tokens[0].equals("v")) {
+					Vertex vertex = new Vertex(new Vector3(Float.valueOf(tokens[1]), Float.valueOf(tokens[2]), Float.valueOf(tokens[3])));
 					addVertex(vertex);
+<<<<<<< HEAD
 					//System.out.printf("v %f %f %f\n", vertex.position.x, vertex.position.y, vertex.position.z);
 				}
 
@@ -94,11 +97,23 @@ public class Model {
 						addIndex(Integer.parseInt(s));
 					}
 					//System.out.printf("f %s %s %s\n", raw[0], raw[1], raw[2]);
+=======
+					// System.out.printf("v %f %f %f\n", vertex.position.x,
+					// vertex.position.y, vertex.position.z);
+				}
+
+				if (tokens[0].equals("f")) {
+					addIndex(Integer.parseInt(tokens[1]));
+					addIndex(Integer.parseInt(tokens[2]));
+					addIndex(Integer.parseInt(tokens[3]));
+					// System.out.printf("f %s %s %s\n", raw[0], raw[1],
+					// raw[2]);
+>>>>>>> 5bad105477d6f04f2a85b24368b339591a3cbdb6
 				}
 			}
 			scan.close();
 		} catch (Exception e) {
-			// CMEngine.LOGGER.error("Error parsing OBJ file.", e);
+			CMEngine.LOGGER.error("Error parsing OBJ file.", e);
 		}
 	}
 	

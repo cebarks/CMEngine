@@ -1,5 +1,6 @@
 package net.cme.engine;
 
+import net.cme.model.Model;
 import net.cme.util.Vector3;
 import net.cme.world.Player;
 import net.cme.world.World;
@@ -36,6 +37,7 @@ public class CMEngine implements Runnable {
 		state = State.LOADING;
 
 		player = new Player(this);
+		Model model = new Model("bunny.obj");
 
 		state = State.RUNNING;
 		while (state == State.RUNNING) {
@@ -43,6 +45,7 @@ public class CMEngine implements Runnable {
 			window.clear();
 			camera.render();
 			window.update();
+			model.render();
 		}
 		window.destroy();
 		camera.destroy();

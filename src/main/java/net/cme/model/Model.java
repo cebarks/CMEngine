@@ -87,7 +87,6 @@ public class Model {
 				if (tokens[0].equals("v")) {
 					Vertex vertex = new Vertex(new Vector3(Float.valueOf(tokens[1]), Float.valueOf(tokens[2]), Float.valueOf(tokens[3])));
 					addVertex(vertex);
-<<<<<<< HEAD
 					//System.out.printf("v %f %f %f\n", vertex.position.x, vertex.position.y, vertex.position.z);
 				}
 
@@ -97,7 +96,6 @@ public class Model {
 						addIndex(Integer.parseInt(s));
 					}
 					//System.out.printf("f %s %s %s\n", raw[0], raw[1], raw[2]);
-=======
 					// System.out.printf("v %f %f %f\n", vertex.position.x,
 					// vertex.position.y, vertex.position.z);
 				}
@@ -108,7 +106,6 @@ public class Model {
 					addIndex(Integer.parseInt(tokens[3]));
 					// System.out.printf("f %s %s %s\n", raw[0], raw[1],
 					// raw[2]);
->>>>>>> 5bad105477d6f04f2a85b24368b339591a3cbdb6
 				}
 			}
 			scan.close();

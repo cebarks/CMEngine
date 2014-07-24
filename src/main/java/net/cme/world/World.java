@@ -1,6 +1,5 @@
 package net.cme.world;
 
-
 public class World {
 	private String name;
 

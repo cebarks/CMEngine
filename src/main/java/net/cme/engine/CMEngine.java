@@ -1,6 +1,7 @@
 package net.cme.engine;
 
 import net.cme.model.Model;
+import net.cme.util.Shader;
 import net.cme.util.Vector3;
 import net.cme.world.Player;
 import net.cme.world.World;
@@ -35,8 +36,13 @@ public class CMEngine implements Runnable {
 		window = new Window(this, TITLE, WIDTH, HEIGHT, 60, true);
 		player = new Player(this);
 		
+		Shader shader = new Shader();
+		shader.addVertexShader(shader.loadShaderSource("basicVertex.glsl"));
+		shader.compile();
+		
 		Model model = new Model("bunny.obj");
-
+		model.bindShader(shader);
+		
 		state = State.RUNNING;
 		while (state == State.RUNNING) {
 			player.input();

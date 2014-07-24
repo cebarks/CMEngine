@@ -1,4 +1,4 @@
-package net.cme.vec;
+package net.cme.util;
 
 public class Vector2 {
 	

@@ -1,4 +1,4 @@
-package net.cme.mesh;
+package net.cme.model;
 
 public class Model {
 	

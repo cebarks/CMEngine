@@ -1,7 +1,7 @@
-package net.cme.mesh;
+package net.cme.model;
 
-import net.cme.vec.Vector2;
-import net.cme.vec.Vector3;
+import net.cme.util.Vector2;
+import net.cme.util.Vector3;
 
 public class Vertex {
 	public Vector3 position, normal, tangent;

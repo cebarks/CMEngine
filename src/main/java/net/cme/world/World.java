@@ -1,11 +1,14 @@
 package net.cme.world;
 
+import net.cme.engine.CMEngine;
+
 public class World {
 	private String name;
+	private CMEngine engine;
 
-	public World(Game game, String name) {
+	public World(CMEngine engine, String name) {
 		this.name = name;
-		game.addWorld(this);
+		this.engine = engine;
 	}
 	
 	public String getName() {

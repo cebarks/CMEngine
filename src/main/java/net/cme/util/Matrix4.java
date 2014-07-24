@@ -1,4 +1,4 @@
-package net.cme.vec;
+package net.cme.util;
 
 import org.lwjgl.util.vector.Vector3f;
 

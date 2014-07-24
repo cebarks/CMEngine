@@ -6,14 +6,14 @@
 		</Console>
 		
 		<File name="LogFile" fileName="CMEngine.log">
-			<PatternLayout pattern="%d{HH:mm:ss} [DEngine] %-5level %logger{36} - %msg%n" />
+			<PatternLayout pattern="%d{HH:mm:ss} [%t] %-5level %logger{36} - %msg%n" />
 		</File>
 	</Appenders>
 	<Loggers>
 		<Root level="error">
 			<AppenderRef ref="Console" />
 		</Root>
-		<logger name="net.cme.CMEngine" level="TRACE" />
+		<logger name="net.cme.engine.CMEngine" level="TRACE" />
 		<Root level="ERROR">
 			<AppenderRef ref="CONSOLE" />
 		</Root>

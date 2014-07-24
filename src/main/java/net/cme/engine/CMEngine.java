@@ -15,7 +15,7 @@ public class CMEngine implements Runnable {
 	public static final int WIDTH = 800;
 	public static final int HEIGHT = 600;
 
-	public static final Logger LOGGER = LogManager.getLogger();
+	public static final Logger LOGGER = LogManager.getLogger(CMEngine.class);
 
 	private Window window;
 	private Camera camera;

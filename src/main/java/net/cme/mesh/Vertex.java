@@ -1,12 +1,21 @@
 package net.cme.mesh;
 
-import net.cme.vec.Vector3;
-
 public class Vertex {
+	public float x, y, z, w;
+	public final int SIZE;
 	
-	public final Vector3 position;
+	public Vertex(float x, float y, float z) {
+		this.x = x;
+		this.y = y;
+		this.z = z;
+		SIZE = 3;
+	}
 	
-	public Vertex(Vector3 position) {
-		this.position = position;
+	public Vertex(float x, float y, float z, float w) {
+		this.x = x;
+		this.y = y;
+		this.z = z;
+		this.w = w;
+		SIZE = 4;
 	}
 }

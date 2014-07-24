@@ -3,6 +3,7 @@ package net.cme.engine;
 import static org.lwjgl.opengl.GL11.*;
 
 import org.lwjgl.LWJGLException;
+import org.lwjgl.opengl.ContextAttribs;
 import org.lwjgl.opengl.Display;
 import org.lwjgl.opengl.DisplayMode;
 import org.lwjgl.opengl.GLContext;
@@ -27,7 +28,9 @@ public class Window {
 			Display.setDisplayMode(new DisplayMode(width, height));
 			Display.setTitle(title);
 			Display.setVSyncEnabled(vsync);
-			Display.create(new PixelFormat(0, 1, 0, 4));
+			PixelFormat pixelFormat = new PixelFormat(0, 1, 0, 4);
+			ContextAttribs contextAttribs = new ContextAttribs(3, 2).withProfileCore(true).withForwardCompatible(true);
+			Display.create(new PixelFormat(), contextAttribs);
 		} catch (LWJGLException e) {
 			CMEngine.exitOnError(1, e);
 		}

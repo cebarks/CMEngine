@@ -6,7 +6,7 @@
 		</Console>
 		
 		<File name="LogFile" fileName="CMEngine.log">
-			<PatternLayout pattern="%d{HH:mm:ss} [DEngine] %-5level %logger{36} - %msg%n" />
+			<PatternLayout pattern="%d{HH:mm:ss} [%t] %-5level %logger{36} - %msg%n" />
 		</File>
 	</Appenders>
 	<Loggers>

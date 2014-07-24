@@ -8,7 +8,7 @@ import org.lwjgl.input.Keyboard;
 public class Player {
 	private Engine engine;
 	
-	public void create(Engine engine) {
+	public Player(Engine engine) {
 		this.engine = engine;
 		engine.addPlayer(this);
 	}

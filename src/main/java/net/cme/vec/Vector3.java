@@ -1,41 +1,19 @@
 package net.cme.vec;
 
-import java.io.Serializable;
-
-@SuppressWarnings("serial")
-public class Vector3 implements Serializable {
-	/**
-	 * The x component of the vector.
-	 */
+public class Vector3 {
+	
 	public float x;
-	/**
-	 * The y component of the vector.
-	 */
+	
 	public float y;
-	/**
-	 * The z component of the vector.
-	 */
+	
 	public float z;
-	/**
-	 * The length component of the vector.
-	 */
+
 	public float length;
 
-	/**
-	 * Constructor for a 3D vector.
-	 *
-	 * @param x
-	 *            the x coordinate.
-	 * @param y
-	 *            the y coordinate.
-	 * @param z_
-	 *            the y coordinate.
-	 */
 	public Vector3(float x, float y, float z) {
 		this.x = x;
 		this.y = y;
 		this.z = z;
-
 		length = length();
 	}
 
@@ -81,10 +59,5 @@ public class Vector3 implements Serializable {
 
 	public Vector3 negative() {
 		return new Vector3(-x, -y, -z);
-	}
-
-	@Override
-	public String toString() {
-		return String.format("(x:%f y:%f z:%f)", x, y, z);
 	}
 }

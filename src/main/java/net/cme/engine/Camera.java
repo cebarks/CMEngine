@@ -1,9 +1,9 @@
 package net.cme.engine;
 
-import net.cme.mesh.Vertex;
+import net.cme.vec.Vector3;
 
 public class Camera {
-	public void create(Engine engine, Vertex position, Vertex rotation, float fov, float zNear, float zFar) {
+	public Camera(Engine engine, Vector3 position, Vector3 rotation, float fov, float zNear, float zFar) {
 		engine.addCamera(this);
 	}
 	
@@ -12,6 +12,6 @@ public class Camera {
 	}
 
 	public void destroy() {
-		//TODO Delete all shaders, textures, VBO's
+		//TODO Destroys opengl
 	}
 }

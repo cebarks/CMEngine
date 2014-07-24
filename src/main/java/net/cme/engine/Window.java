@@ -12,7 +12,7 @@ public class Window {
 	private int fps;
 	private boolean vsync;
 	
-	public void create(Engine engine, String title, int width, int height, int fps, boolean vsync) {
+	public Window(Engine engine, String title, int width, int height, int fps, boolean vsync) {
 		engine.addWindow(this);
 		
 		this.engine = engine;

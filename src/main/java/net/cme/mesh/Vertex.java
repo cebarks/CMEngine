@@ -1,21 +1,18 @@
 package net.cme.mesh;
 
+import net.cme.vec.Vector2;
+import net.cme.vec.Vector3;
+
 public class Vertex {
-	public float x, y, z, w;
-	public final int SIZE;
+	public Vector3 position, normal, tangent;
+	public Vector2 textureCoordinate;
 	
-	public Vertex(float x, float y, float z) {
-		this.x = x;
-		this.y = y;
-		this.z = z;
-		SIZE = 3;
-	}
+	public static final int SIZE = 11;
 	
-	public Vertex(float x, float y, float z, float w) {
-		this.x = x;
-		this.y = y;
-		this.z = z;
-		this.w = w;
-		SIZE = 4;
+	public Vertex(Vector3 position, Vector3 normal, Vector3 tangent, Vector2 textureCoordinate) {
+		this.position = position;
+		this.normal = normal;
+		this.tangent = tangent;
+		this.textureCoordinate = textureCoordinate;
 	}
 }

@@ -8,7 +8,7 @@ import net.cme.engine.Engine;
 public class Game {
 	private List<World> worlds;
 
-	public void create(Engine engine, String location) {
+	public Game(Engine engine, String location) {
 		worlds = new ArrayList<World>();
 		//TODO Loads world here
 		engine.addGame(this);

@@ -24,19 +24,17 @@ public class CMEngine implements Runnable {
 	private World currentWorld;
 
 	private Thread thread;
-	private int exitStatus = 0;
 
 	public CMEngine() {
 		thread = new Thread(this, "CMEngine-0");
-		window = new Window(this, TITLE, WIDTH, HEIGHT, 60, true);
-		camera = new Camera(this, new Vector3(0, 0, 0), new Vector3(0, 0, 0), 68, 0.01f, 100f);
-		run();
 	}
 
 	public void run() {
 		state = State.LOADING;
-
+		camera = new Camera(this, new Vector3(0, 0, 0), new Vector3(0, 0, 0), 68, 0.01f, 100f);
+		window = new Window(this, TITLE, WIDTH, HEIGHT, 60, true);
 		player = new Player(this);
+		
 		Model model = new Model("bunny.obj");
 
 		state = State.RUNNING;
@@ -44,12 +42,11 @@ public class CMEngine implements Runnable {
 			player.input();
 			window.clear();
 			camera.render();
-			window.update();
 			model.render();
+			window.update();
 		}
 		window.destroy();
 		camera.destroy();
-		System.exit(getExitStatus());
 	}
 
 	public void start() {
@@ -62,12 +59,12 @@ public class CMEngine implements Runnable {
 
 	public void exit(int status) {
 		LOGGER.info("Closing under status " + status);
-		exitStatus = status;
+		System.exit(status);
 	}
 
-	public void exitOnError(int status, Exception e) {
+	public static void exitOnError(int status, Exception e) {
 		LOGGER.error("Closing with errors under status " + status, e);
-		exitStatus = status;
+		System.exit(status);
 	}
 
 	public void setCurrentState(State state) {
@@ -80,9 +77,5 @@ public class CMEngine implements Runnable {
 
 	public World getWorld() {
 		return currentWorld;
-	}
-
-	private int getExitStatus() {
-		return exitStatus;
 	}
 }

@@ -25,6 +25,7 @@ import java.util.List;
 import java.util.Scanner;
 
 import net.cme.engine.CMEngine;
+import net.cme.util.Shader;
 import net.cme.util.Util;
 import net.cme.util.Vector3;
 
@@ -36,10 +37,14 @@ public class Model {
 	private int ibo;
 	private int size;
 
+	private Shader shader;
+	
 	public Model(String location) {
+		double time = System.currentTimeMillis();
+		
 		try {
 			parseObj(new FileInputStream(new File("src/main/resources/" + location)));
-		} catch (FileNotFoundException e) {
+		} catch (FileNotFoundException e) { 
 			CMEngine.LOGGER.error("Couldn't load model: " + location, e);
 		}
 
@@ -52,6 +57,9 @@ public class Model {
 
 		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, ibo);
 		glBufferData(GL_ELEMENT_ARRAY_BUFFER, Util.intToBuffer(Util.integerListToIntArray(indicies)), GL_STATIC_DRAW);
+		
+		double delta = System.currentTimeMillis() - time;
+		CMEngine.LOGGER.info("Loaded " + location + " in " + delta + " ms");
 	}
 
 	public void render() {
@@ -79,6 +87,17 @@ public class Model {
 				if (tokens[0].equals("v")) {
 					Vertex vertex = new Vertex(new Vector3(Float.valueOf(tokens[1]), Float.valueOf(tokens[2]), Float.valueOf(tokens[3])));
 					addVertex(vertex);
+<<<<<<< HEAD
+					//System.out.printf("v %f %f %f\n", vertex.position.x, vertex.position.y, vertex.position.z);
+				}
+
+				if (line.startsWith("f ")) {
+					String[] raw = line.substring(2).split(" ");
+					for (String s : raw) {
+						addIndex(Integer.parseInt(s));
+					}
+					//System.out.printf("f %s %s %s\n", raw[0], raw[1], raw[2]);
+=======
 					// System.out.printf("v %f %f %f\n", vertex.position.x,
 					// vertex.position.y, vertex.position.z);
 				}
@@ -89,12 +108,17 @@ public class Model {
 					addIndex(Integer.parseInt(tokens[3]));
 					// System.out.printf("f %s %s %s\n", raw[0], raw[1],
 					// raw[2]);
+>>>>>>> 5bad105477d6f04f2a85b24368b339591a3cbdb6
 				}
 			}
 			scan.close();
 		} catch (Exception e) {
 			CMEngine.LOGGER.error("Error parsing OBJ file.", e);
 		}
+	}
+	
+	public void bindShader(Shader shader) {
+		this.shader = shader;
 	}
 
 	private void addVertex(Vertex vertex) {

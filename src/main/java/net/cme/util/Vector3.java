@@ -45,6 +45,12 @@ public class Vector3 {
 	public float magnitude() {
 		return (float) Math.sqrt((x * x) + (y * y) + (z * z));
 	}
+	
+	public Vector3 rotate(Quaternion rotation) {
+		Quaternion conjugate = rotation.conjugate();
+		Quaternion w = rotation.mul(this).mul(conjugate);
+		return new Vector3(w.x, w.y, w.z);
+	}
 
 	public Vector3 cross(Vector3 v) {
 		float crossX = y * v.z - v.y * z;

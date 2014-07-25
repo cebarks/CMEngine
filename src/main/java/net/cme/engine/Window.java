@@ -30,7 +30,7 @@ public class Window {
 			Display.setTitle(title);
 			Display.setVSyncEnabled(vsync);
 			PixelFormat pixelFormat = new PixelFormat(8, 8, 0, 4);
-			ContextAttribs contextAttribs = new ContextAttribs(3, 2).withForwardCompatible(true);
+			ContextAttribs contextAttribs = new ContextAttribs(3, 2).withProfileCore(true).withForwardCompatible(true);
 			Display.create(pixelFormat, contextAttribs);
 		} catch (LWJGLException e) {
 			CMEngine.exitOnError(1, e);
@@ -51,7 +51,7 @@ public class Window {
 	public void destroy() {
 		Display.destroy();
 	}
-	
+
 	public String getTitle() {
 		return title;
 	}

@@ -12,9 +12,9 @@ import net.cme.util.Util;
 import net.cme.util.Vector3;
 
 public class Model {
-	private List<Vector3> vertexList;
-	private List<Vector3> normalList;
-	private List<Face> faceList;
+	public List<Vector3> vertexList;
+	public List<Vector3> normalList;
+	public List<Face> faceList;
 
 	private Model() {
 		vertexList = new ArrayList<Vector3>();
@@ -22,18 +22,9 @@ public class Model {
 		faceList = new ArrayList<Face>();
 	}
 
-<<<<<<< HEAD
-	public void render() {
-		if(shader != null) {
-			shader.bind();
-		}
-		
-		glEnableVertexAttribArray(0);
-=======
 	public static Model loadModel(String location) throws FileNotFoundException, IOException {
 		long time = System.currentTimeMillis();
 		BufferedReader read = new BufferedReader(new FileReader("src/main/resources/models/" + location));
->>>>>>> 2578798d5d2f4aaa983099f0898a655351286083
 
 		Model m = new Model();
 
@@ -57,20 +48,18 @@ public class Model {
 				float z = Float.parseFloat(token[3]);
 				m.normalList.add(new Vector3(x, y, z));
 			}
+
+			if (token[1].equals("f")) {
+				Vector3 vertexIndicies = new Vector3(Float.parseFloat(token[1].split("/")[0]), Float.parseFloat(token[2].split("/")[0]), Float.parseFloat(token[3].split("/")[0]));
+				Vector3 normalIndicies = new Vector3(Float.parseFloat(token[1].split("/")[3]), Float.parseFloat(token[2].split("/")[3]), Float.parseFloat(token[3].split("/")[3]));
+
+				m.faceList.add(new Face(vertexIndicies, normalIndicies));
+			}
 		}
-<<<<<<< HEAD
-	}
 
-	public void bindShader(Shader shader) {
-		this.shader = shader;
-	}
+		read.close();
 
-	private void addVertex(Vertex vertex) {
-		vertices.add(vertex);
-	}
-=======
 		CMEngine.LOGGER.info(String.format("Took %dms to parse: %s", System.currentTimeMillis() - time, location));
->>>>>>> 2578798d5d2f4aaa983099f0898a655351286083
 
 		return new Model();
 	}

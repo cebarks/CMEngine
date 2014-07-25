@@ -3,7 +3,10 @@ package net.cme.engine;
 import static org.lwjgl.opengl.GL20.GL_FRAGMENT_SHADER;
 import static org.lwjgl.opengl.GL20.GL_VERTEX_SHADER;
 import net.cme.model.Model;
+<<<<<<< HEAD
 import net.cme.model.Shader;
+=======
+>>>>>>> 2578798d5d2f4aaa983099f0898a655351286083
 import net.cme.util.Vector3;
 import net.cme.world.Player;
 import net.cme.world.World;
@@ -37,6 +40,7 @@ public class CMEngine implements Runnable {
 		camera = new Camera(new Vector3(0, 0, 0), new Vector3(0, 0, 0), 68, 0.01f, 1000f);
 		window = new Window(TITLE, WIDTH, HEIGHT, 60, true);
 		player = new Player(this);
+<<<<<<< HEAD
 		
 		Model model = new Model("bunny.obj");
 		
@@ -47,17 +51,34 @@ public class CMEngine implements Runnable {
 		
 		model.bindShader(shader);
 		
+=======
+
+		// Shader shader = new Shader();
+		// shader.addVertexShader(shader.loadShaderSource("basicVertex.glsl"));
+		// shader.compile();
+
+		// model.bindShader(shader);
+
+		Model model = null;
+
+		try {
+			model = Model.loadModel("bunny.obj");
+		} catch (Exception e) {
+			LOGGER.error("Error loading OBJ model.", e);
+		}
+
+>>>>>>> 2578798d5d2f4aaa983099f0898a655351286083
 		state = State.RUNNING;
 		while (state == State.RUNNING) {
 			player.input();
 			window.clear();
 			camera.render();
-			model.render();
 			window.update();
 		}
 		
 		window.destroy();
 		camera.destroy();
+		exit(0);
 	}
 
 	public void start() {
@@ -74,7 +95,7 @@ public class CMEngine implements Runnable {
 	}
 
 	public static void exitOnError(int status, Exception e) {
-		LOGGER.error("Closing with errors under status " + status, e);
+		LOGGER.fatal("Closing with errors under status " + status, e);
 		System.exit(status);
 	}
 

@@ -13,6 +13,7 @@ public class Player {
 	}
 
 	public void input() {
-		if (Keyboard.isKeyDown(Keyboard.KEY_ESCAPE)) engine.setCurrentState(State.EXITING);
+		if (Keyboard.isKeyDown(Keyboard.KEY_ESCAPE))
+			engine.setCurrentState(State.EXITING);
 	}
 }

@@ -5,9 +5,9 @@ import java.nio.IntBuffer;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.lwjgl.BufferUtils;
-
 import net.cme.model.Vertex;
+
+import org.lwjgl.BufferUtils;
 
 public class Util {
 	public static FloatBuffer vertexToBuffer(Vertex[] vertex) {

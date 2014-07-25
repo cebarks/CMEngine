@@ -1,9 +1,9 @@
 package net.cme.util;
 
 public class Vector2 {
-	
+
 	public float x;
-	
+
 	public float y;
 
 	public float length;

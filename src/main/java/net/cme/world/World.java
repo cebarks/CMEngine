@@ -6,7 +6,7 @@ public class World {
 	public World(String name) {
 		this.name = name;
 	}
-	
+
 	public String getName() {
 		return name;
 	}

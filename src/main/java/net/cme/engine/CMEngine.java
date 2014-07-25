@@ -1,7 +1,6 @@
 package net.cme.engine;
 
 import net.cme.model.Model;
-import net.cme.util.Shader;
 import net.cme.util.Vector3;
 import net.cme.world.Player;
 import net.cme.world.World;
@@ -35,24 +34,31 @@ public class CMEngine implements Runnable {
 		camera = new Camera(this, new Vector3(0, 0, 0), new Vector3(0, 0, 0), 68, 0.01f, 100f);
 		window = new Window(this, TITLE, WIDTH, HEIGHT, 60, true);
 		player = new Player(this);
-		
-		Shader shader = new Shader();
-		shader.addVertexShader(shader.loadShaderSource("basicVertex.glsl"));
-		shader.compile();
-		
-		Model model = new Model("bunny.obj");
-		model.bindShader(shader);
-		
+
+		// Shader shader = new Shader();
+		// shader.addVertexShader(shader.loadShaderSource("basicVertex.glsl"));
+		// shader.compile();
+
+		// model.bindShader(shader);
+
+		Model model = null;
+
+		try {
+			model = Model.loadModel("bunny.obj");
+		} catch (Exception e) {
+			LOGGER.error("Error loading OBJ model.", e);
+		}
+
 		state = State.RUNNING;
 		while (state == State.RUNNING) {
 			player.input();
 			window.clear();
 			camera.render();
-			model.render();
 			window.update();
 		}
 		window.destroy();
 		camera.destroy();
+		exit(0);
 	}
 
 	public void start() {
@@ -69,7 +75,7 @@ public class CMEngine implements Runnable {
 	}
 
 	public static void exitOnError(int status, Exception e) {
-		LOGGER.error("Closing with errors under status " + status, e);
+		LOGGER.fatal("Closing with errors under status " + status, e);
 		System.exit(status);
 	}
 

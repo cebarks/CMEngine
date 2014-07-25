@@ -1,6 +1,5 @@
 package net.cme.util;
 
-
 public class Matrix4 {
 	private float[][] matrix;
 

@@ -22,10 +22,8 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Scanner;
 
 import net.cme.engine.CMEngine;
-import net.cme.util.Shader;
 import net.cme.util.Util;
 import net.cme.util.Vector3;
 
@@ -63,6 +61,10 @@ public class Model {
 	}
 
 	public void render() {
+		if(shader != null) {
+			shader.bind();
+		}
+		
 		glEnableVertexAttribArray(0);
 
 		glBindBuffer(GL_ARRAY_BUFFER, vbo);
@@ -113,7 +115,7 @@ public class Model {
 			CMEngine.LOGGER.error("Error parsing OBJ file.", e);
 		}
 	}
-	
+
 	public void bindShader(Shader shader) {
 		this.shader = shader;
 	}

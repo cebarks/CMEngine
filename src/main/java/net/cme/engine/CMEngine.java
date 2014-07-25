@@ -1,7 +1,9 @@
 package net.cme.engine;
 
+import static org.lwjgl.opengl.GL20.GL_FRAGMENT_SHADER;
+import static org.lwjgl.opengl.GL20.GL_VERTEX_SHADER;
 import net.cme.model.Model;
-import net.cme.util.Shader;
+import net.cme.model.Shader;
 import net.cme.util.Vector3;
 import net.cme.world.Player;
 import net.cme.world.World;
@@ -32,15 +34,17 @@ public class CMEngine implements Runnable {
 
 	public void run() {
 		state = State.LOADING;
-		camera = new Camera(this, new Vector3(0, 0, 0), new Vector3(0, 0, 0), 68, 0.01f, 100f);
-		window = new Window(this, TITLE, WIDTH, HEIGHT, 60, true);
+		camera = new Camera(new Vector3(0, 0, 0), new Vector3(0, 0, 0), 68, 0.01f, 1000f);
+		window = new Window(TITLE, WIDTH, HEIGHT, 60, true);
 		player = new Player(this);
 		
-		Shader shader = new Shader();
-		shader.addVertexShader(shader.loadShaderSource("basicVertex.glsl"));
-		shader.compile();
-		
 		Model model = new Model("bunny.obj");
+		
+		Shader shader = new Shader();
+		shader.addProgram("basicVertex.glsl", GL_VERTEX_SHADER);
+		shader.addProgram("basicFragment.glsl", GL_FRAGMENT_SHADER);
+		shader.compileShader();
+		
 		model.bindShader(shader);
 		
 		state = State.RUNNING;
@@ -51,6 +55,7 @@ public class CMEngine implements Runnable {
 			model.render();
 			window.update();
 		}
+		
 		window.destroy();
 		camera.destroy();
 	}
@@ -63,7 +68,7 @@ public class CMEngine implements Runnable {
 		state = State.EXITING;
 	}
 
-	public void exit(int status) {
+	public static void exit(int status) {
 		LOGGER.info("Closing under status " + status);
 		System.exit(status);
 	}

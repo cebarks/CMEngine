@@ -13,14 +13,12 @@ import org.lwjgl.opengl.DisplayMode;
 import org.lwjgl.opengl.PixelFormat;
 
 public class Window {
-	private CMEngine engine;
 	private String title;
 	private int width, height;
 	private int fps;
 	private boolean vsync;
 
-	public Window(CMEngine engine, String title, int width, int height, int fps, boolean vsync) {
-		this.engine = engine;
+	public Window(String title, int width, int height, int fps, boolean vsync) {
 		this.title = title;
 		this.width = width;
 		this.height = height;
@@ -53,11 +51,7 @@ public class Window {
 	public void destroy() {
 		Display.destroy();
 	}
-
-	public CMEngine getEngine() {
-		return engine;
-	}
-
+	
 	public String getTitle() {
 		return title;
 	}

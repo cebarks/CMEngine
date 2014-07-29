@@ -14,12 +14,14 @@ import org.lwjgl.opengl.DisplayMode;
 import org.lwjgl.opengl.PixelFormat;
 
 public class Window {
-	private String title;
-	private int width, height;
-	private int fps;
+	private final String title;
+	private final int width, height;
+	private final int fps;
 	private boolean vsync;
+	private CMEngine engine;
 
-	public Window(String title, int width, int height, int fps, boolean vsync) {
+	public Window(CMEngine engine, String title, int width, int height, int fps, boolean vsync) {
+		this.engine = engine;
 		this.title = title;
 		this.width = width;
 		this.height = height;
@@ -36,7 +38,7 @@ public class Window {
 		} catch (LWJGLException e) {
 			CMEngine.exitOnError(1, e);
 		}
-		
+
 		CMEngine.LOGGER.info(String.format("Running on GLVersion: %s", glGetString(GL_VERSION)));
 	}
 
@@ -48,6 +50,9 @@ public class Window {
 	public void update() {
 		Display.update();
 		Display.sync(fps);
+		if (Display.isCloseRequested()) {
+			engine.setCurrentState(State.EXITING);
+		}
 	}
 
 	public void destroy() {

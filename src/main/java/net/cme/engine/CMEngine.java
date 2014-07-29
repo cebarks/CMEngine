@@ -35,7 +35,7 @@ public class CMEngine implements Runnable {
 	public void run() {
 		state = State.LOADING;
 		camera = new Camera(new Vector3(0, 0, 0), new Vector3(0, 0, 0), 68, 0.01f, 1000f);
-		window = new Window(TITLE, WIDTH, HEIGHT, 60, true);
+		window = new Window(this, TITLE, WIDTH, HEIGHT, 60, true);
 		player = new Player(this);
 		
 		Shader shader = new Shader();

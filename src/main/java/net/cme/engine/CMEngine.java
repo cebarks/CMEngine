@@ -43,7 +43,7 @@ public class CMEngine implements Runnable {
 		shader.addProgram("basicFragment.glsl", GL_FRAGMENT_SHADER);
 		shader.compileShader();
 
-		Model model = Model.loadModel("triangle.obj");
+		Model model = Model.getModel("triangle.obj");
 		model.generateModel(shader);
 		
 		state = State.RUNNING;

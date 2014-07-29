@@ -57,7 +57,7 @@ public class Shader {
 			CMEngine.exitOnError(1, new LWJGLException());
 		}
 
-		glAttachShader(shader, program);
+		glAttachShader(program, shader);
 	}
 
 	public void compileShader() {
@@ -67,16 +67,7 @@ public class Shader {
 			CMEngine.LOGGER.error("Could not link program: \n" + glGetProgramInfoLog(program, 1024));
 		}
 
-		if (glGetShaderi(program, GL_LINK_STATUS) == GL_FALSE) {
-			CMEngine.LOGGER.error("Could not link program: \n" + glGetShaderInfoLog(program, 1024));
-			CMEngine.exitOnError(1, new LWJGLException());
-		}
-
 		glValidateProgram(program);
-
-		if (glGetProgrami(program, GL_VALIDATE_STATUS) == 0) {
-			CMEngine.LOGGER.error("Could not validate program: \n" + glGetProgramInfoLog(program, 1024));
-		}
 
 		if (glGetShaderi(program, GL_VALIDATE_STATUS) == GL_FALSE) {
 			CMEngine.LOGGER.error("Could not validate program: \n" + glGetShaderInfoLog(program, 1024));

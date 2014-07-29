@@ -1,6 +1,9 @@
 package net.cme.engine;
 
+import static org.lwjgl.opengl.GL20.GL_FRAGMENT_SHADER;
+import static org.lwjgl.opengl.GL20.GL_VERTEX_SHADER;
 import net.cme.model.Model;
+import net.cme.model.Shader;
 import net.cme.util.Vector3;
 import net.cme.world.Player;
 import net.cme.world.World;
@@ -35,26 +38,20 @@ public class CMEngine implements Runnable {
 		window = new Window(TITLE, WIDTH, HEIGHT, 60, true);
 		player = new Player(this);
 		
-//		Shader shader = new Shader();
-//		shader.addProgram("basicVertex.glsl", GL_VERTEX_SHADER);
-//		shader.addProgram("basicFragment.glsl", GL_FRAGMENT_SHADER);
-//		shader.compileShader();
-//		
-//		model.bindShader(shader);
+		Shader shader = new Shader();
+		shader.addProgram("basicVertex.glsl", GL_VERTEX_SHADER);
+		shader.addProgram("basicFragment.glsl", GL_FRAGMENT_SHADER);
+		shader.compileShader();
 
-		Model model = null;
-
-		try {
-			model = Model.loadModel("bunny.obj");
-		} catch (Exception e) {
-			LOGGER.error("Error loading OBJ model.", e);
-		}
-
+		Model model = Model.loadModel("triangle.obj");
+		model.generateModel(shader);
+		
 		state = State.RUNNING;
 		while (state == State.RUNNING) {
 			player.input();
 			window.clear();
 			camera.render();
+			model.render();
 			window.update();
 		}
 		

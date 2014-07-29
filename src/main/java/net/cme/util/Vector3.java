@@ -9,6 +9,8 @@ public class Vector3 {
 	public float z;
 
 	public float length;
+	
+	public static final int SIZE = 3;
 
 	public Vector3(float x, float y, float z) {
 		this.x = x;

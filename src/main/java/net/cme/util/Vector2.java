@@ -7,6 +7,8 @@ public class Vector2 {
 	public float y;
 
 	public float length;
+	
+	public static final int SIZE = 2;
 
 	public Vector2(float x, float y) {
 		this.x = x;

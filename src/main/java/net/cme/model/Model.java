@@ -1,66 +1,120 @@
 package net.cme.model;
 
 import java.io.BufferedReader;
-import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
+import java.nio.FloatBuffer;
 import java.util.ArrayList;
 import java.util.List;
 
 import net.cme.engine.CMEngine;
-import net.cme.util.Util;
 import net.cme.util.Vector3;
+
+import static org.lwjgl.opengl.GL11.*;
+import static org.lwjgl.opengl.GL15.*;
+import static org.lwjgl.opengl.GL20.*;
+import static org.lwjgl.opengl.GL30.*;
+
+import org.lwjgl.BufferUtils;
 
 public class Model {
 	public List<Vector3> vertexList;
 	public List<Vector3> normalList;
 	public List<Face> faceList;
 
-	private Model() {
+	public Transform transform;
+	public Shader shader;
+	public int vaoID, vboID;
+	
+	public Model() {
 		vertexList = new ArrayList<Vector3>();
 		normalList = new ArrayList<Vector3>();
 		faceList = new ArrayList<Face>();
 	}
+	
+	public void render() {
 
-	public static Model loadModel(String location) throws FileNotFoundException, IOException {
-		long time = System.currentTimeMillis();
-		BufferedReader read = new BufferedReader(new FileReader("src/main/resources/models/" + location));
+		shader.bind();
+		
+		glBindVertexArray(vaoID);
+		glEnableVertexAttribArray(0);
+		
+		glDrawArrays(GL_TRIANGLES, 0, vertexList.size() * 3);
+		
+		glDisableVertexAttribArray(0);
+		glBindVertexArray(0);
+		
+	}
 
-		Model m = new Model();
+	public static Model loadModel(String location) {
+		try {
+			long time = System.currentTimeMillis();
+			BufferedReader read = new BufferedReader(new FileReader("src/main/resources/models/" + location));
 
-		String line;
-		while ((line = read.readLine()) != null) {
-			String[] token = line.split(" ");
-			Util.removeEmptyStrings(token);
-			if (line.isEmpty() || token[0].equals("") || token.length == 0)
-				continue;
+			Model m = new Model();
 
-			if (token[0].equals("v")) {
-				float x = Float.parseFloat(token[1]);
-				float y = Float.parseFloat(token[2]);
-				float z = Float.parseFloat(token[3]);
-				m.vertexList.add(new Vector3(x, y, z));
+			String line;
+			while ((line = read.readLine()) != null) {
+				String[] token = line.split(" ");
+				
+				if (line.isEmpty() || token[0].equals("") || token.length == 0)
+					continue;
+
+				if (token[0].equals("v")) {
+					float x = Float.parseFloat(token[1]);
+					float y = Float.parseFloat(token[2]);
+					float z = Float.parseFloat(token[3]);
+					m.vertexList.add(new Vector3(x, y, z));
+				}
+
+				if (token[0].equals("vn")) {
+					float x = Float.parseFloat(token[1]);
+					float y = Float.parseFloat(token[2]);
+					float z = Float.parseFloat(token[3]);
+					m.normalList.add(new Vector3(x, y, z));
+				}
+
+				if (token[1].equals("f")) {
+					Vector3 vertexIndicies = new Vector3(Float.parseFloat(token[1].split("/")[0]), Float.parseFloat(token[2].split("/")[0]), Float.parseFloat(token[3].split("/")[0]));
+					Vector3 normalIndicies = new Vector3(Float.parseFloat(token[1].split("/")[3]), Float.parseFloat(token[2].split("/")[3]), Float.parseFloat(token[3].split("/")[3]));
+
+					m.faceList.add(new Face(vertexIndicies, normalIndicies));
+				}
 			}
 
-			if (token[1].equals("vn")) {
-				float x = Float.parseFloat(token[1]);
-				float y = Float.parseFloat(token[2]);
-				float z = Float.parseFloat(token[3]);
-				m.normalList.add(new Vector3(x, y, z));
-			}
+			read.close();
 
-			if (token[1].equals("f")) {
-				Vector3 vertexIndicies = new Vector3(Float.parseFloat(token[1].split("/")[0]), Float.parseFloat(token[2].split("/")[0]), Float.parseFloat(token[3].split("/")[0]));
-				Vector3 normalIndicies = new Vector3(Float.parseFloat(token[1].split("/")[3]), Float.parseFloat(token[2].split("/")[3]), Float.parseFloat(token[3].split("/")[3]));
+			CMEngine.LOGGER.info(String.format("Took %dms to parse: %s", System.currentTimeMillis() - time, location));
 
-				m.faceList.add(new Face(vertexIndicies, normalIndicies));
-			}
+			return m;
+			
+		} catch(IOException e) {
+			CMEngine.LOGGER.error("Could not load model " + location);
 		}
+		return null;
+	}
+	
+	public void generateModel(Shader shader) {
+		this.shader = shader;
+		FloatBuffer vertexBuffer = BufferUtils.createFloatBuffer(vertexList.size() * 3);
+		for(Vector3 vertex : vertexList) {
+			vertexBuffer.put(new float[] {
+					vertex.x, vertex.y, vertex.z
+			});
+		}
+		vertexBuffer.flip();
 
-		read.close();
-
-		CMEngine.LOGGER.info(String.format("Took %dms to parse: %s", System.currentTimeMillis() - time, location));
-
-		return new Model();
+		vaoID = glGenVertexArrays();
+		glBindVertexArray(vaoID);
+		
+		vboID = glGenBuffers();
+		glBindBuffer(GL_ARRAY_BUFFER, vboID);
+		glBufferData(GL_ARRAY_BUFFER, vertexBuffer, GL_STATIC_DRAW);
+		
+		glVertexAttribPointer(0, 3, GL_FLOAT, false, 0, 0);
+		
+		glBindBuffer(GL_ARRAY_BUFFER, 0);
+		
+		glBindVertexArray(0);
 	}
 }

@@ -1,15 +1,17 @@
 package net.cme.model;
 
 import java.io.BufferedReader;
+import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
 import java.nio.FloatBuffer;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import net.cme.engine.CMEngine;
 import net.cme.util.Vector3;
-
 import static org.lwjgl.opengl.GL11.*;
 import static org.lwjgl.opengl.GL15.*;
 import static org.lwjgl.opengl.GL20.*;
@@ -18,6 +20,8 @@ import static org.lwjgl.opengl.GL30.*;
 import org.lwjgl.BufferUtils;
 
 public class Model {
+	private static Map<String, Model> models = new HashMap<String, Model>();
+
 	public List<Vector3> vertexList;
 	public List<Vector3> normalList;
 	public List<Face> faceList;
@@ -45,11 +49,17 @@ public class Model {
 		glBindVertexArray(0);
 		
 	}
+	
+	public static Model getModel(String location) throws FileNotFoundException, IOException {
+		if (!models.containsKey(location))
+			models.put(location, loadModel(location));
 
-	public static Model loadModel(String location) {
-		try {
-			long time = System.currentTimeMillis();
-			BufferedReader read = new BufferedReader(new FileReader("src/main/resources/models/" + location));
+		return models.get(location);
+	}
+		
+	public static Model loadModel(String location) throws FileNotFoundException, IOException {
+		long time = System.currentTimeMillis();
+		BufferedReader read = new BufferedReader(new FileReader("src/main/resources/models/" + location));
 
 			Model m = new Model();
 
@@ -86,12 +96,7 @@ public class Model {
 
 			CMEngine.LOGGER.info(String.format("Took %dms to parse: %s", System.currentTimeMillis() - time, location));
 
-			return m;
-			
-		} catch(IOException e) {
-			CMEngine.LOGGER.error("Could not load model " + location);
-		}
-		return null;
+		return m;
 	}
 	
 	public void generateModel(Shader shader) {

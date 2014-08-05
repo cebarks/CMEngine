@@ -73,7 +73,7 @@ public class Model {
 				normalIndex++;
 			}
 
-			if (token[0].equals("f")) {
+			if (token[1].equals("f")) {
 				Vector3 vertexIndicies = new Vector3(
 						Float.parseFloat(token[1].split("/")[0]),
 						Float.parseFloat(token[2].split("/")[0]),

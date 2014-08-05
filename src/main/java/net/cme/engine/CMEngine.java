@@ -1,15 +1,16 @@
 package net.cme.engine;
 
-import static org.lwjgl.opengl.GL20.GL_FRAGMENT_SHADER;
-import static org.lwjgl.opengl.GL20.GL_VERTEX_SHADER;
-import net.cme.model.Model;
-import net.cme.model.Shader;
-import net.cme.util.Vector3;
-import net.cme.world.Player;
-import net.cme.world.World;
+import static org.lwjgl.opengl.GL11.GL_COLOR_BUFFER_BIT;
+import static org.lwjgl.opengl.GL11.GL_DEPTH_BUFFER_BIT;
+import static org.lwjgl.opengl.GL11.glClear;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.lwjgl.LWJGLException;
+import org.lwjgl.opengl.ContextAttribs;
+import org.lwjgl.opengl.Display;
+import org.lwjgl.opengl.DisplayMode;
+import org.lwjgl.opengl.PixelFormat;
 
 public class CMEngine implements Runnable {
 
@@ -19,46 +20,45 @@ public class CMEngine implements Runnable {
 
 	public static final Logger LOGGER = LogManager.getLogger(CMEngine.class);
 
-	private Window window;
-	private Camera camera;
 	private State state;
-	private Player player;
-
-	private World currentWorld;
 
 	private Thread thread;
-
+	
+	private Game game;
+	
 	public CMEngine() {
 		thread = new Thread(this, "CMEngine-0");
 	}
 
 	public void run() {
+		game = new Game();
+		
 		state = State.LOADING;
-		camera = new Camera(new Vector3(0, 0, 0), new Vector3(0, 0, 0), 68, 0.01f, 1000f);
-		window = new Window(this, TITLE, WIDTH, HEIGHT, 60, true);
-		player = new Player(this);
 		
-		Shader shader = new Shader();
-		shader.addProgram("basicVertex.glsl", GL_VERTEX_SHADER);
-		shader.addProgram("basicFragment.glsl", GL_FRAGMENT_SHADER);
-		shader.compileShader();
-		
-		shader.addUniform("uniformFloat");
-
-		Model model = Model.getModel("triangle.obj");
-		model.generateModel(shader);
-		
-		state = State.RUNNING;
-		while (state == State.RUNNING) {
-			window.clear();
-			player.input();
-			camera.render();
-			model.render();
-			window.update();
+		try {
+			Display.setDisplayMode(new DisplayMode(WIDTH, HEIGHT));
+			Display.setTitle(TITLE);
+			Display.setVSyncEnabled(true);
+			PixelFormat pixelFormat = new PixelFormat(8, 8, 0, 0);
+			ContextAttribs contextAttribs = new ContextAttribs(3, 2).withProfileCore(true).withForwardCompatible(true);
+			Display.create(pixelFormat, contextAttribs);
+		} catch (LWJGLException e) {
+			CMEngine.exitOnError(1, e);
 		}
 		
-		window.destroy();
-		camera.destroy();
+		game.load();
+
+		state = State.RUNNING;
+		
+		while (state == State.RUNNING) {
+			glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+			game.update();
+			Display.update();
+		}
+		
+		game.exit();
+		
+		Display.destroy();
 		exit(0);
 	}
 
@@ -86,9 +86,5 @@ public class CMEngine implements Runnable {
 
 	public State getState() {
 		return state;
-	}
-
-	public World getWorld() {
-		return currentWorld;
 	}
 }

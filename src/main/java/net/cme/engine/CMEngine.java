@@ -42,14 +42,16 @@ public class CMEngine implements Runnable {
 		shader.addProgram("basicVertex.glsl", GL_VERTEX_SHADER);
 		shader.addProgram("basicFragment.glsl", GL_FRAGMENT_SHADER);
 		shader.compileShader();
+		
+		shader.addUniform("uniformFloat");
 
 		Model model = Model.getModel("triangle.obj");
 		model.generateModel(shader);
 		
 		state = State.RUNNING;
 		while (state == State.RUNNING) {
-			player.input();
 			window.clear();
+			player.input();
 			camera.render();
 			model.render();
 			window.update();

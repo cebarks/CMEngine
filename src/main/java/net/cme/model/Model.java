@@ -36,8 +36,13 @@ public class Model {
 		faceList = new ArrayList<Face>();
 	}
 
+	float test = 0;
 	public void render() {
-
+		
+		test += 0.01f;
+		
+		shader.setUniformFloat("uniformFloat", (float) Math.sin(test));
+		
 		shader.bind();
 
 		glBindVertexArray(vaoID);
@@ -47,7 +52,6 @@ public class Model {
 
 		glDisableVertexAttribArray(0);
 		glBindVertexArray(0);
-
 	}
 
 	public static Model getModel(String location) {
@@ -108,9 +112,11 @@ public class Model {
 	public void generateModel(Shader shader) {
 		this.shader = shader;
 		FloatBuffer vertexBuffer = BufferUtils.createFloatBuffer(vertexList.size() * 3);
+		
 		for (Vector3 vertex : vertexList) {
 			vertexBuffer.put(new float[] { vertex.x, vertex.y, vertex.z });
 		}
+		
 		vertexBuffer.flip();
 
 		vaoID = glGenVertexArrays();

@@ -1,5 +1,9 @@
 package net.cme.util;
 
+import java.nio.FloatBuffer;
+
+import org.lwjgl.BufferUtils;
+
 public class Matrix4 {
 	private float[][] matrix;
 
@@ -42,5 +46,17 @@ public class Matrix4 {
 
 	public void set(int x, int y, float value) {
 		matrix[x][y] = value;
+	}
+	
+	public static FloatBuffer createFlippedFloatBuffer(Matrix4 value) {
+		FloatBuffer buffer = BufferUtils.createFloatBuffer(4 * 4);
+		
+		for(int i = 0; i < 4; i++)
+			for(int u = 0; u < 4; u++)
+				buffer.put(value.get(i, u));
+		
+		buffer.flip();
+		
+		return buffer;
 	}
 }

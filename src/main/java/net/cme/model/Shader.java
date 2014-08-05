@@ -12,23 +12,32 @@ import static org.lwjgl.opengl.GL20.glGetProgramInfoLog;
 import static org.lwjgl.opengl.GL20.glGetProgrami;
 import static org.lwjgl.opengl.GL20.glGetShaderInfoLog;
 import static org.lwjgl.opengl.GL20.glGetShaderi;
+import static org.lwjgl.opengl.GL20.glGetUniformLocation;
 import static org.lwjgl.opengl.GL20.glLinkProgram;
-import static org.lwjgl.opengl.GL20.glShaderSource;
-import static org.lwjgl.opengl.GL20.glUseProgram;
+import static org.lwjgl.opengl.GL15.*;
+import static org.lwjgl.opengl.GL20.*;
+import static org.lwjgl.opengl.GL20.*;
+import static org.lwjgl.opengl.GL20.glGetUniformLocation;
+import static org.lwjgl.opengl.GL32.*;
 import static org.lwjgl.opengl.GL20.glValidateProgram;
 
 import java.io.BufferedReader;
 import java.io.FileReader;
+import java.util.HashMap;
 
 import net.cme.engine.CMEngine;
+import net.cme.util.Matrix4;
+import net.cme.util.Vector3;
 
 import org.lwjgl.LWJGLException;
 
 public class Shader {
 	private int program;
+	private HashMap<String, Integer> uniforms;
 
 	public Shader() {
 		program = glCreateProgram();
+		uniforms = new HashMap<String, Integer>();
 
 		if (program == 0) {
 			CMEngine.LOGGER.error("Program could not be created: " + glGetShaderInfoLog(program, 1024));
@@ -92,5 +101,32 @@ public class Shader {
 			CMEngine.exitOnError(1, e);
 		}
 		return shaderSource.toString();
+	}
+	
+	public void addUniform(String uniform) {
+		int uniformLocation = glGetUniformLocation(program, uniform);
+		
+		if(uniformLocation == 0xFFFFFFFF) {
+			CMEngine.LOGGER.error("Could not load uniform " + uniform);
+			CMEngine.exitOnError(1, new Exception());
+		}
+		
+		uniforms.put(uniform, uniformLocation);
+	}
+	
+	public void setUniformInt(String name, int value) {
+		glUniform1i(uniforms.get(name), value);
+	}
+	
+	public void setUniformFloat(String name, float value) {
+		glUniform1f(uniforms.get(name), value);
+	}
+	
+	public void setUniformVec3(String name, Vector3 value) {
+		glUniform3f(uniforms.get(name), value.x, value.y, value.z);
+	}
+	
+	public void setUniformMat4(String name, Matrix4 value) {
+		glUniformMatrix4(uniforms.get(name), true, Matrix4.createFlippedFloatBuffer(value));
 	}
 }

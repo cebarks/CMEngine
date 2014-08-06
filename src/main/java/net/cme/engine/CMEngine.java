@@ -1,6 +1,6 @@
 package net.cme.engine;
 
-import static org.lwjgl.opengl.GL11.GL_COLOR_BUFFER_BIT;
+import static org.lwjgl.opengl.GL11.*;
 import static org.lwjgl.opengl.GL11.GL_DEPTH_BUFFER_BIT;
 import static org.lwjgl.opengl.GL11.glClear;
 
@@ -31,6 +31,7 @@ public class CMEngine implements Runnable {
 	}
 
 	public void run() {
+		
 		game = new Game();
 		
 		state = State.LOADING;
@@ -39,7 +40,7 @@ public class CMEngine implements Runnable {
 			Display.setDisplayMode(new DisplayMode(WIDTH, HEIGHT));
 			Display.setTitle(TITLE);
 			Display.setVSyncEnabled(true);
-			PixelFormat pixelFormat = new PixelFormat(8, 8, 0, 0);
+			PixelFormat pixelFormat = new PixelFormat(8, 8, 0, 16);
 			ContextAttribs contextAttribs = new ContextAttribs(3, 2).withProfileCore(true).withForwardCompatible(true);
 			Display.create(pixelFormat, contextAttribs);
 		} catch (LWJGLException e) {
@@ -52,6 +53,7 @@ public class CMEngine implements Runnable {
 		
 		while (state == State.RUNNING) {
 			glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+			glEnable(GL_DEPTH_TEST);
 			game.update();
 			Display.update();
 		}

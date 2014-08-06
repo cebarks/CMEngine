@@ -10,11 +10,16 @@ import net.cme.model.Shader;
 import net.cme.model.Transform;
 import net.cme.util.Vector3;
 
+import org.lwjgl.input.Keyboard;
+import org.lwjgl.input.Mouse;
+
 public class Game {
 	
 	public Transform transform, testtransform;
 	public Shader shader;
 	public Model model;
+	
+	private float x = 0.01f;
 	
 	public void load() { 
 		transform = new Transform();
@@ -26,10 +31,9 @@ public class Game {
 		shader.compileShader();
 
 		shader.addUniform("uniformPosition");
-		shader.addUniform("uniformColor");
 
 		try {
-			model = Model.loadModel("triangle.obj");
+			model = Model.loadModel("cow.obj");
 		} catch (FileNotFoundException e) {
 			CMEngine.LOGGER.error("Could not load models");
 			CMEngine.exitOnError(1, e);
@@ -41,18 +45,23 @@ public class Game {
 		model.generateModel(shader);
 	}
 	
-	float x = 0;
 	public void update() {
-		x += 1f;
+		
+		if(Keyboard.isKeyDown(Keyboard.KEY_UP)) {
+			x += 0.01f;
+		}
+		
+		if(Keyboard.isKeyDown(Keyboard.KEY_DOWN)) {
+			x -= 0.01f;
+		}
 		
 		transform.translation = new Vector3(0, -0.5f, 0);
-		transform.rotation = new Vector3(0, x, 0);
-		transform.scale = new Vector3(0.5f, 0.5f, 0.5f);
+		transform.rotation = new Vector3(Mouse.getY(), Mouse.getX(), 0);
+		transform.scale = new Vector3(x, x, x);
 
-		shader.setUniformVec3("uniformColor", new Vector3(1, 1, 1));
 		shader.setUniformMat4("uniformPosition", transform.getTransformation());
 		shader.bind();
-
+		
 		model.render();
 	}
 

@@ -153,6 +153,32 @@ public class Matrix4 {
 
 		return this;
 	}
+	
+	public Matrix4 initProjection(float zNear, float zFar, float width, float height, float fov) {
+		
+		float aspectRatio = width/height;
+		float tanHalfFOV = (float) Math.tan(Math.toRadians(fov / 2));
+		float zRange = zNear - zFar;
+		
+		matrix[0][0] = 1.0f / (tanHalfFOV * aspectRatio);
+		matrix[0][1] = 0;
+		matrix[0][2] = 0;
+		matrix[0][3] = 0;
+		matrix[1][0] = 0;
+		matrix[1][1] = 1.0f / tanHalfFOV;
+		matrix[1][2] = 0;
+		matrix[1][3] = 0;
+		matrix[2][0] = 0;
+		matrix[2][1] = 0;
+		matrix[2][2] = (-zNear - zFar) / zRange;
+		matrix[2][3] = 2 * zFar * zNear / zRange;
+		matrix[3][0] = 0;
+		matrix[3][1] = 0;
+		matrix[3][2] = 1;
+		matrix[3][3] = 0;
+		
+		return this;
+	}
 
 	public Matrix4 mul(Matrix4 r) {
 		Matrix4 res = new Matrix4();

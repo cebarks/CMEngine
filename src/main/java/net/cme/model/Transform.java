@@ -4,12 +4,13 @@ import net.cme.util.Matrix4;
 import net.cme.util.Vector3;
 
 public class Transform {
+	private float zNear, zFar, width, height, fov;
 	public Vector3 translation, rotation, scale;
 	
 	public Transform() {
 		translation = new Vector3(0, 0, 0);
 		rotation = new Vector3(0, 0, 0);
-		scale = new Vector3(1, 1, 1);
+		scale = new Vector3(0, 0, 0);
 	}
 	
 	public Matrix4 getTransformation() {
@@ -20,15 +21,18 @@ public class Transform {
 		return translationMatrix.mul(rotationMatrix.mul(scaleMatrix));
 	}
 	
-	public void translate() {
+	public Matrix4 getProjectedTransformation() {
+		Matrix4 transformationMatrix = getTransformation();
+		Matrix4 projectionMatrix = new Matrix4().initProjection(zNear, zFar, width, height, fov);
 		
+		return projectionMatrix.mul(transformationMatrix);
 	}
 	
-	public void rotation() {
-		
-	}
-	
-	public void scale() {
-		
+	public void setProjection(float zNear, float zFar, float width, float height, float fov) {
+		this.zNear = zNear;
+		this.zFar = zFar;
+		this.width = width;
+		this.height = height;
+		this.fov = fov;
 	}
 }

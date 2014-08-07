@@ -1,12 +1,11 @@
 package net.cme.engine;
 
 import static org.lwjgl.opengl.GL11.*;
-import static org.lwjgl.opengl.GL11.GL_DEPTH_BUFFER_BIT;
-import static org.lwjgl.opengl.GL11.glClear;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.lwjgl.LWJGLException;
+import org.lwjgl.input.Keyboard;
 import org.lwjgl.opengl.ContextAttribs;
 import org.lwjgl.opengl.Display;
 import org.lwjgl.opengl.DisplayMode;
@@ -14,7 +13,7 @@ import org.lwjgl.opengl.PixelFormat;
 
 public class CMEngine implements Runnable {
 
-	public static final String TITLE = "CMEngine";
+	public static final String TITLE = "PRESS TAB TO TRIP OUT, PRESS SPACE TO CREATE POINTS";
 	public static final int WIDTH = 800;
 	public static final int HEIGHT = 600;
 
@@ -52,7 +51,10 @@ public class CMEngine implements Runnable {
 		state = State.RUNNING;
 		
 		while (state == State.RUNNING) {
-			glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+			
+			if(!Keyboard.isKeyDown(Keyboard.KEY_TAB))
+				glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+			
 			glEnable(GL_DEPTH_TEST);
 			game.update();
 			Display.update();

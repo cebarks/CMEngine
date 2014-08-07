@@ -22,12 +22,11 @@ import static org.lwjgl.opengl.GL20.glUniformMatrix4;
 import static org.lwjgl.opengl.GL20.glUseProgram;
 import static org.lwjgl.opengl.GL20.glValidateProgram;
 
-import java.io.BufferedReader;
-import java.io.FileReader;
 import java.util.HashMap;
 
 import net.cme.engine.CMEngine;
 import net.cme.util.Matrix4;
+import net.cme.util.Util;
 import net.cme.util.Vector3;
 
 import org.lwjgl.LWJGLException;
@@ -51,7 +50,7 @@ public class Shader {
 	}
 
 	public void addProgram(String location, int type) {
-		String source = loadShaderSource(location);
+		String source = Util.loadShaderSource(location);
 		int shader = glCreateShader(type);
 
 		if (shader == 0) {
@@ -83,25 +82,6 @@ public class Shader {
 			CMEngine.LOGGER.error("Could not validate program: \n" + glGetShaderInfoLog(program, 1024));
 			CMEngine.exitOnError(1, new LWJGLException());
 		}
-	}
-
-	public String loadShaderSource(String location) {
-		StringBuilder shaderSource = new StringBuilder();
-		BufferedReader shaderReader = null;
-
-		try {
-			shaderReader = new BufferedReader(new FileReader("src/main/resources/" + location));
-			String line;
-
-			while ((line = shaderReader.readLine()) != null) {
-				shaderSource.append(line).append("\n");
-			}
-
-			shaderReader.close();
-		} catch (Exception e) {
-			CMEngine.exitOnError(1, e);
-		}
-		return shaderSource.toString();
 	}
 	
 	public void addUniform(String uniform) {

@@ -17,7 +17,7 @@ import org.lwjgl.opengl.PixelFormat;
 
 public class CMEngine implements Runnable {
 
-	public static final String TITLE = "Press Escape to leave. Press tab to trip out";
+	public static final String TITLE = "(Mess around with this while listening to 3rd Complex by Nosaj Thing) | ESC to quit |TAB for surpise | SPACE to skip | ARROWS for main bunny | R to reset bunny";
 	public static final int WIDTH = 1600;
 	public static final int HEIGHT = 900;
 

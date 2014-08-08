@@ -84,12 +84,8 @@ public class Model {
 		glEnableVertexAttribArray(0);
 
 		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, iboID);
-
-		if (Keyboard.isKeyDown(Keyboard.KEY_SPACE))
-			glDrawElements(GL_POINTS, faceList.size() * 3, GL_UNSIGNED_INT, 0);
-		else
-			glDrawElements(GL_TRIANGLES, faceList.size() * 3, GL_UNSIGNED_INT, 0);
-
+		glDrawElements(GL_POINTS, faceList.size() * 3, GL_UNSIGNED_INT, 0);
+	
 		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
 		glDisableVertexAttribArray(0);
 		glBindVertexArray(0);

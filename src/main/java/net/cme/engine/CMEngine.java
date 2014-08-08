@@ -1,6 +1,10 @@
 package net.cme.engine;
 
-import static org.lwjgl.opengl.GL11.*;
+import static org.lwjgl.opengl.GL11.GL_COLOR_BUFFER_BIT;
+import static org.lwjgl.opengl.GL11.GL_DEPTH_BUFFER_BIT;
+import static org.lwjgl.opengl.GL11.GL_DEPTH_TEST;
+import static org.lwjgl.opengl.GL11.glClear;
+import static org.lwjgl.opengl.GL11.glEnable;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -13,9 +17,9 @@ import org.lwjgl.opengl.PixelFormat;
 
 public class CMEngine implements Runnable {
 
-	public static final String TITLE = "PRESS TAB TO TRIP OUT, PRESS SPACE TO CREATE POINTS";
-	public static final int WIDTH = 800;
-	public static final int HEIGHT = 600;
+	public static final String TITLE = "Press Escape to leave. Press tab to trip out";
+	public static final int WIDTH = 1600;
+	public static final int HEIGHT = 900;
 
 	public static final Logger LOGGER = LogManager.getLogger(CMEngine.class);
 

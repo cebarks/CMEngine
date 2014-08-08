@@ -35,15 +35,6 @@ public class Game {
 		model = new Model("bunny.obj");
 		model.setShader(shader);
 		model.bufferData();
-		
-		mainmodel = new Model("bunny.obj");
-		mainmodel.setShader(shader);
-		mainmodel.bufferData();
-		
-		modelFly = new Model("bunny.obj");
-		modelFly.setShader(shader);
-		modelFly.bufferData();
-		
 	}
 	
 	private void input() {
@@ -94,7 +85,7 @@ public class Game {
 		shader.setUniformVec3("uniformColor", new Vector3((float) Math.sin((tick / 30) - 6), (float) Math.sin((tick / 30) + 7), (float) Math.sin((tick / 30) + 8)));
 		shader.bind();
 		
-		mainmodel.render();
+		model.render();
 
 		//DANCING BUNNY CODE
 		for(int i = -12; i < 12; i++) {

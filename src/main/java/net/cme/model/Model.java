@@ -2,7 +2,6 @@ package net.cme.model;
 
 import static org.lwjgl.opengl.GL11.GL_FLOAT;
 import static org.lwjgl.opengl.GL11.GL_POINTS;
-import static org.lwjgl.opengl.GL11.GL_TRIANGLES;
 import static org.lwjgl.opengl.GL11.GL_UNSIGNED_INT;
 import static org.lwjgl.opengl.GL11.glDrawElements;
 import static org.lwjgl.opengl.GL15.GL_ARRAY_BUFFER;
@@ -26,8 +25,6 @@ import java.util.List;
 
 import net.cme.util.Util;
 import net.cme.util.Vector3;
-
-import org.lwjgl.input.Keyboard;
 
 public class Model {
 
@@ -67,6 +64,7 @@ public class Model {
 						faceList.add(new Face(
 								new Vector3(Float.parseFloat(tokens[1].split("/")[0]), Float.parseFloat((tokens[2] + i).split("/")[0]), Float.parseFloat((tokens[3] + i).split("/")[0])),
 								new Vector3(Float.parseFloat(tokens[1].split("/")[2]), Float.parseFloat((tokens[2] + i).split("/")[2]), Float.parseFloat((tokens[3] + i).split("/")[2]))));
+								System.out.println(Integer.parseInt(tokens[1].split("/")[0]) + " "  + Integer.parseInt((tokens[2] + i).split("/")[0]) + " " + Integer.parseInt((tokens[3] + i).split("/")[0]));
 					}		
 				}
 			}

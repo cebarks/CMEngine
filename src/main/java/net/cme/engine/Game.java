@@ -2,9 +2,6 @@ package net.cme.engine;
 import static org.lwjgl.opengl.GL11.glClearColor;
 import static org.lwjgl.opengl.GL20.GL_FRAGMENT_SHADER;
 import static org.lwjgl.opengl.GL20.GL_VERTEX_SHADER;
-
-import java.util.Random;
-
 import net.cme.model.Model;
 import net.cme.model.Shader;
 import net.cme.model.Transform;
@@ -16,7 +13,7 @@ public class Game {
 	
 	public Transform transform;
 	public Shader shader;
-	public Model model, mainmodel, modelFly;
+	public Model model;
 	
 	private float tick = 1, mainBunnyY = 0, mainBunnyX = 0;
 	
@@ -72,24 +69,24 @@ public class Game {
 	
 	public void update() {
 		input();
-		glClearColor((float) Math.sin((tick / 30) + 8), (float) Math.sin((tick / 30) + 9), (float) Math.sin((tick / 30) + 10), 1);
+		glClearColor((float) Math.sin((tick / 30)), (float) Math.sin((tick / 30) + 1), (float) Math.sin((tick / 30) + 2), 1);
 		
 		tick++;
 		
 		//CONTROLLED BUNNY CODE
-		transform.translation = new Vector3(mainBunnyX, mainBunnyY, 1);
+		transform.translation = new Vector3(mainBunnyX, mainBunnyY, 0.5f);
 		transform.rotation = new Vector3(-mainBunnyY * 300, 0, mainBunnyX * 300);
 		transform.scale = new Vector3(0.1f, 0.1f, 0.1f);
 		
 		shader.setUniformMat4("uniformPosition", transform.getProjectedTransformation());
-		shader.setUniformVec3("uniformColor", new Vector3((float) Math.sin((tick / 30) - 6), (float) Math.sin((tick / 30) + 7), (float) Math.sin((tick / 30) + 8)));
+		shader.setUniformVec3("uniformColor", new Vector3((float) Math.sin((tick / 30) - 4) + 1, (float) Math.sin((tick / 30) + 5) + 1, (float) Math.sin((tick / 30) + 6) + 1));
 		shader.bind();
 		
 		model.render();
 
 		//DANCING BUNNY CODE
 		for(int i = -12; i < 12; i++) {
-			transform.translation = new Vector3(i, (float) Math.sin((tick / 30) + i), 10);
+			transform.translation = new Vector3(i, (float) Math.sin((tick / 30) + i), 5);
 			
 			if(i % 2 == 0) 
 				transform.rotation = new Vector3(0, tick * 3, 0);

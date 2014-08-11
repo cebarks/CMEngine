@@ -17,9 +17,9 @@ import org.lwjgl.opengl.PixelFormat;
 
 public class CMEngine implements Runnable {
 
-	public static final String TITLE = "(Mess around with this while listening to 3rd Complex by Nosaj Thing) | ESC to quit |TAB for surpise | SPACE to skip | ARROWS for main bunny | R to reset bunny";
-	public static final int WIDTH = 1600;
-	public static final int HEIGHT = 900;
+	public static final String TITLE = "ESC to quit | TAB for surpise | SPACE to skip | ARROWS for main bunny | R to reset bunny";
+	public static final int WIDTH = 800;
+	public static final int HEIGHT = 600;
 
 	public static final Logger LOGGER = LogManager.getLogger(CMEngine.class);
 
@@ -43,7 +43,7 @@ public class CMEngine implements Runnable {
 			Display.setDisplayMode(new DisplayMode(WIDTH, HEIGHT));
 			Display.setTitle(TITLE);
 			Display.setVSyncEnabled(true);
-			PixelFormat pixelFormat = new PixelFormat(8, 8, 0, 16);
+			PixelFormat pixelFormat = new PixelFormat(8, 8, 0, 8);
 			ContextAttribs contextAttribs = new ContextAttribs(3, 2).withProfileCore(true).withForwardCompatible(true);
 			Display.create(pixelFormat, contextAttribs);
 		} catch (LWJGLException e) {

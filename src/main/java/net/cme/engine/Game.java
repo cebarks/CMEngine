@@ -1,5 +1,4 @@
 package net.cme.engine;
-import static org.lwjgl.opengl.GL11.glClearColor;
 import static org.lwjgl.opengl.GL20.GL_FRAGMENT_SHADER;
 import static org.lwjgl.opengl.GL20.GL_VERTEX_SHADER;
 import net.cme.model.Model;
@@ -13,11 +12,9 @@ public class Game {
 	
 	public Transform transform;
 	public Shader shader;
-	public Model model;
+	public Model[] models;
 	
 	public float tick = 1, x = 0, y = 0;
-	
-	public boolean isProjected = false;
 	
 	public void load() { 
 		transform = new Transform();
@@ -29,11 +26,28 @@ public class Game {
 		shader.compileShader();
 		
 		shader.addUniform("uniformPosition");
-		shader.addUniform("uniformColor");
 
-		model = new Model("triangle.obj");
-		model.setShader(shader);
-		model.bufferData();
+		models = new Model[5];
+		
+		models[0] = new Model("bunny.obj");
+		models[0].setShader(shader);
+		models[0].bufferData();
+		
+		models[1] = new Model("cow.obj");
+		models[1].setShader(shader);
+		models[1].bufferData();
+		
+		models[2] = new Model("cube.obj");
+		models[2].setShader(shader);
+		models[2].bufferData();
+		
+		models[3] = new Model("playermodel.obj");
+		models[3].setShader(shader);
+		models[3].bufferData();
+		
+		models[4] = new Model("triangle.obj");
+		models[4].setShader(shader);
+		models[4].bufferData();
 	}
 	
 	private void input() {
@@ -42,11 +56,11 @@ public class Game {
 		}
 		
 		if(Keyboard.isKeyDown(Keyboard.KEY_UP)) {
-			y += 0.01f;
+			y += 0.1f;
 		}
 		
 		if(Keyboard.isKeyDown(Keyboard.KEY_DOWN)) {
-			y -= 0.01f;
+			y -= 0.1f;
 		}
 		
 		if(Keyboard.isKeyDown(Keyboard.KEY_LEFT)) {
@@ -61,39 +75,28 @@ public class Game {
 			y = 0;
 			x = 0;
 		}
-		
-		while(Keyboard.next()) {
-			if(Keyboard.isKeyDown(Keyboard.KEY_SPACE)) {
-				if(isProjected)
-					isProjected = false;
-				else 
-					isProjected = true;
-			}
-		}
 	}
 	
 	public void update() {
 		input();
-		tick++;
+
+		tick++;		
 		
-		glClearColor((float) Math.sin((tick / 30)), (float) Math.sin((tick / 30) + 1), (float) Math.sin((tick / 30) + 2), 1);
-		
-		transform.translation = new Vector3(x, y, 0.2f);
-		transform.rotation = new Vector3(0, x * 300, 0);
-		transform.scale = new Vector3(0.05f, 0.05f, 0.05f);
-		
-		if(isProjected)
+		for(int i = 0; i < 10; i++) {
+			transform.translation = new Vector3(((i - 5) * 2) + 2, y - 1, 10);
+			transform.rotation = new Vector3(0, x * 300, 0);
+			transform.scale = new Vector3(0.4f, 0.4f, 0.4f);
+			
 			shader.setUniformMat4("uniformPosition", transform.getProjectedTransformation());
-		else
-			shader.setUniformMat4("uniformPosition", transform.getTransformation());
-		
-		shader.setUniformVec3("uniformColor", new Vector3((float) Math.sin((tick / 30) - 4) + 1, (float) Math.sin((tick / 30) + 5) + 1, (float) Math.sin((tick / 30) + 6) + 1));
-		shader.bind();
-		
-		model.render();
+			
+			shader.bind();
+			
+			if(i % 2 == 0)
+				models[Math.abs(i / 2)].render();
+		}
 	}
 
 	public void exit() {
-		model.destroy();
+		
 	}
 }

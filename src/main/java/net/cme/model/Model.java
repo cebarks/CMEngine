@@ -25,6 +25,7 @@ import java.nio.IntBuffer;
 import java.util.ArrayList;
 import java.util.List;
 
+import net.cme.engine.CMEngine;
 import net.cme.util.Util;
 import net.cme.util.Vector3;
 
@@ -34,9 +35,10 @@ public class Model {
 	public List<Face> faceList;
 
 	public Shader shader;
-	public int vaoID, vboID, cboID, iboID;
+	public int vaoID, vboID, iboID;
 
 	public Model(String location) {
+
 		vertexList = new ArrayList<Vector3>();
 		normalList = new ArrayList<Vector3>();
 		faceList = new ArrayList<Face>();
@@ -49,7 +51,7 @@ public class Model {
 			
 			while ((line = meshReader.readLine()) != null) {
 				
-				String[] tokens = line.split(" ");
+				String[] tokens = line.split("[ ]+");
 				tokens = Util.removeEmptyStrings(tokens);
 				
 				if (tokens.length == 0 || tokens[0].isEmpty() || tokens[0].equals("#"))
@@ -62,20 +64,41 @@ public class Model {
 					normalList.add(new Vector3(Float.valueOf(tokens[1]), Float.valueOf(tokens[2]), Float.valueOf(tokens[3])));
 					
 				} else if (tokens[0].equals("f")) {	
-					for (int i = 0; i < tokens.length - 3; i++) {
-						faceList.add(new Face(
-								new Vector3(Float.parseFloat(tokens[1].split("/")[0]), Float.parseFloat((tokens[2] + i).split("/")[0]), Float.parseFloat((tokens[3] + i).split("/")[0])),
-								new Vector3(Float.parseFloat(tokens[1].split("/")[2]), Float.parseFloat((tokens[2] + i).split("/")[2]), Float.parseFloat((tokens[3] + i).split("/")[2]))));
-								System.out.println(Integer.parseInt(tokens[1].split("/")[0]) + " "  + Integer.parseInt((tokens[2] + i).split("/")[0]) + " " + Integer.parseInt((tokens[3] + i).split("/")[0]));
+						if(tokens[1].split("/").length == 1) {
+							faceList.add(new Face(
+									new Vector3(Float.parseFloat(tokens[1].split("/")[0]) - 1, Float.parseFloat((tokens[2]).split("/")[0]) - 1, Float.parseFloat((tokens[3]).split("/")[0]) - 1),
+									new Vector3(1, 1, 1)));
+						}
+							
+						if(tokens[1].split("/").length == 2) {
+							faceList.add(new Face(
+									new Vector3(Float.parseFloat(tokens[1].split("/")[0]) - 1, Float.parseFloat((tokens[2]).split("/")[0]) - 1, Float.parseFloat((tokens[3]).split("/")[0]) - 1),
+									new Vector3(1, 1, 1)));
+						}
+							
+						if(tokens[1].split("/").length == 3) {
+							
+							if(tokens[1].split("/")[1].equals("")) {
+								faceList.add(new Face(
+										new Vector3(Float.parseFloat(tokens[1].split("/")[0]) - 1, Float.parseFloat((tokens[2]).split("/")[0]) - 1, Float.parseFloat((tokens[3]).split("/")[0]) - 1),
+										new Vector3(Float.parseFloat(tokens[1].split("/")[2]), Float.parseFloat((tokens[2]).split("/")[2]), Float.parseFloat((tokens[3]).split("/")[2]))));
+							}
+
+							else if(!tokens[1].split("/")[1].equals("")) {
+								faceList.add(new Face(
+										new Vector3(Float.parseFloat(tokens[1].split("/")[0]) - 1, Float.parseFloat((tokens[2]).split("/")[0]) - 1, Float.parseFloat((tokens[3]).split("/")[0]) - 1),
+										new Vector3(Float.parseFloat(tokens[1].split("/")[2]), Float.parseFloat((tokens[2]).split("/")[2]), Float.parseFloat((tokens[3]).split("/")[2]))));
+							}
+						}
 					}		
 				}
-			}
+			
 			
 			meshReader.close();
 			
 		} catch (Exception e) {
-			e.printStackTrace();
-			System.exit(1);
+			CMEngine.LOGGER.error("Could not load model");
+			CMEngine.exitOnError(1, e);
 		}
 	}
 
@@ -97,8 +120,8 @@ public class Model {
 			indexList.add(new Vector3(f.verticies.x, f.verticies.y, f.verticies.z));
 		}
 
-		FloatBuffer vertexBuffer = Util.createFlippedFloatBuffer(vertexList);
 		IntBuffer indexBuffer = Util.createFlippedIntBuffer(indexList);
+		FloatBuffer vertexBuffer = Util.createFlippedFloatBuffer(vertexList);
 
 		vaoID = glGenVertexArrays();
 		glBindVertexArray(vaoID);

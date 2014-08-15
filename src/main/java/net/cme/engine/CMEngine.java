@@ -9,7 +9,6 @@ import static org.lwjgl.opengl.GL11.glEnable;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.lwjgl.LWJGLException;
-import org.lwjgl.input.Keyboard;
 import org.lwjgl.opengl.ContextAttribs;
 import org.lwjgl.opengl.Display;
 import org.lwjgl.opengl.DisplayMode;
@@ -21,24 +20,22 @@ public class CMEngine implements Runnable {
 	public static final int WIDTH = 800;
 	public static final int HEIGHT = 600;
 
+	public boolean running = false;
+	
 	public static final Logger LOGGER = LogManager.getLogger(CMEngine.class);
-
-	private State state;
-
+	
+	public Game game = new Game();
+	
 	private Thread thread;
-	
-	private Game game;
-	
+
 	public CMEngine() {
 		thread = new Thread(this, "CMEngine-0");
 	}
 
 	public void run() {
 		
-		game = new Game();
-		
-		state = State.LOADING;
-		
+		running = true;
+
 		try {
 			Display.setDisplayMode(new DisplayMode(WIDTH, HEIGHT));
 			Display.setTitle(TITLE);
@@ -52,16 +49,14 @@ public class CMEngine implements Runnable {
 		
 		game.load();
 
-		state = State.RUNNING;
-		
-		while (state == State.RUNNING) {
-			
-			if(!Keyboard.isKeyDown(Keyboard.KEY_TAB))
-				glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-			
+		while (running == true) {
+			glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 			glEnable(GL_DEPTH_TEST);
+			
 			game.update();
+			
 			Display.update();
+			Display.sync(60);
 		}
 		
 		game.exit();
@@ -74,10 +69,6 @@ public class CMEngine implements Runnable {
 		thread.start();
 	}
 
-	public void stop() {
-		state = State.EXITING;
-	}
-
 	public static void exit(int status) {
 		LOGGER.info("Closing under status " + status);
 		System.exit(status);
@@ -86,13 +77,5 @@ public class CMEngine implements Runnable {
 	public static void exitOnError(int status, Exception e) {
 		LOGGER.fatal("Closing with errors under status " + status, e);
 		System.exit(status);
-	}
-
-	public void setCurrentState(State state) {
-		this.state = state;
-	}
-
-	public State getState() {
-		return state;
 	}
 }

@@ -29,7 +29,7 @@ public class Game {
 		shader.addUniform("uniformPosition");
 		shader.addUniform("uniformColor");
 
-		model = new Model("bunny.obj");
+		model = new Model("triangle.obj");
 		model.setShader(shader);
 		model.bufferData();
 	}
@@ -83,27 +83,9 @@ public class Game {
 		shader.bind();
 		
 		model.render();
-
-		//DANCING BUNNY CODE
-		for(int i = -12; i < 12; i++) {
-			transform.translation = new Vector3(i, (float) Math.sin((tick / 30) + i), 5);
-			
-			if(i % 2 == 0) 
-				transform.rotation = new Vector3(0, tick * 3, 0);
-			else
-				transform.rotation = new Vector3(tick * 3, 0, 0);
-			
-			transform.scale = new Vector3((float) Math.sin((tick / 30) + i), (float) Math.sin((tick / 30) + i), (float) Math.sin((tick / 30) + i));
-
-			shader.setUniformMat4("uniformPosition", transform.getProjectedTransformation());
-			shader.setUniformVec3("uniformColor", new Vector3((float) Math.sin((tick / 30) + 2), (float) Math.sin((tick / 30) + 3), (float) Math.sin((tick / 30) + 4)));
-			shader.bind();
-
-			model.render();
-		}
 	}
 
 	public void exit() {
-
+		model.destroy();
 	}
 }

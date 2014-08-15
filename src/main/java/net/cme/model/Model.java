@@ -1,7 +1,7 @@
 package net.cme.model;
 
 import static org.lwjgl.opengl.GL11.GL_FLOAT;
-import static org.lwjgl.opengl.GL11.GL_POINTS;
+import static org.lwjgl.opengl.GL11.GL_TRIANGLES;
 import static org.lwjgl.opengl.GL11.GL_UNSIGNED_INT;
 import static org.lwjgl.opengl.GL11.glDrawElements;
 import static org.lwjgl.opengl.GL15.GL_ARRAY_BUFFER;
@@ -9,11 +9,13 @@ import static org.lwjgl.opengl.GL15.GL_ELEMENT_ARRAY_BUFFER;
 import static org.lwjgl.opengl.GL15.GL_STATIC_DRAW;
 import static org.lwjgl.opengl.GL15.glBindBuffer;
 import static org.lwjgl.opengl.GL15.glBufferData;
+import static org.lwjgl.opengl.GL15.glDeleteBuffers;
 import static org.lwjgl.opengl.GL15.glGenBuffers;
 import static org.lwjgl.opengl.GL20.glDisableVertexAttribArray;
 import static org.lwjgl.opengl.GL20.glEnableVertexAttribArray;
 import static org.lwjgl.opengl.GL20.glVertexAttribPointer;
 import static org.lwjgl.opengl.GL30.glBindVertexArray;
+import static org.lwjgl.opengl.GL30.glDeleteVertexArrays;
 import static org.lwjgl.opengl.GL30.glGenVertexArrays;
 
 import java.io.BufferedReader;
@@ -47,10 +49,10 @@ public class Model {
 			
 			while ((line = meshReader.readLine()) != null) {
 				
-				String[] tokens = line.split("[ ]+");
+				String[] tokens = line.split(" ");
 				tokens = Util.removeEmptyStrings(tokens);
 				
-				if (tokens.length == 0 || tokens[0].equals("#"))
+				if (tokens.length == 0 || tokens[0].isEmpty() || tokens[0].equals("#"))
 					continue;
 				
 				else if (tokens[0].equals("v")) {
@@ -82,7 +84,7 @@ public class Model {
 		glEnableVertexAttribArray(0);
 
 		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, iboID);
-		glDrawElements(GL_POINTS, faceList.size() * 3, GL_UNSIGNED_INT, 0);
+		glDrawElements(GL_TRIANGLES, faceList.size() * 3, GL_UNSIGNED_INT, 0);
 	
 		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
 		glDisableVertexAttribArray(0);
@@ -105,7 +107,7 @@ public class Model {
 		glBindBuffer(GL_ARRAY_BUFFER, vboID);
 		glBufferData(GL_ARRAY_BUFFER, vertexBuffer, GL_STATIC_DRAW);
 
-		glVertexAttribPointer(0, 3, GL_FLOAT, false, 12, 0);
+		glVertexAttribPointer(0, 3, GL_FLOAT, false, 3 * 4, 0);
 		glBindBuffer(GL_ARRAY_BUFFER, 0);
 		glBindVertexArray(0);
 
@@ -114,6 +116,19 @@ public class Model {
 		glBufferData(GL_ELEMENT_ARRAY_BUFFER, indexBuffer, GL_STATIC_DRAW);
 
 		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
+	}
+	
+	public void destroy() {
+		glDisableVertexAttribArray(0);
+		
+		glBindBuffer(GL_ARRAY_BUFFER, 0);
+		glDeleteBuffers(vboID);
+		
+		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
+		glDeleteBuffers(iboID);
+		
+		glBindVertexArray(0);
+		glDeleteVertexArrays(vaoID);
 	}
 
 	public void setShader(Shader shader) {

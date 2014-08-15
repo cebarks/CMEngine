@@ -44,32 +44,24 @@ public class Util {
 		}
 		return shaderSource.toString();
 	}
-	
-	public static FloatBuffer createFloatBuffer(int size) {
-		return BufferUtils.createFloatBuffer(size);
-	}
-	
-	public static IntBuffer createIntBuffer(int size) {
-		return BufferUtils.createIntBuffer(size);
-	}
-	
+
 	public static FloatBuffer createFlippedFloatBuffer(List<Vector3> data) {
-		FloatBuffer floatBuffer = createFloatBuffer(data.size() * 3);
+		FloatBuffer floatBuffer = BufferUtils.createFloatBuffer(data.size() * 3);
 		
-		for (int i = 0; i < data.size() - 1; i++) {
-			floatBuffer.put(new float[] { data.get(i).x, data.get(i).y, data.get(i).z });
-		}
+		for (Vector3 v : data)
+			floatBuffer.put(new float[] { v.x, v.y, v.z });
+
 		floatBuffer.flip();
 		
 		return floatBuffer;
 	}
 
 	public static IntBuffer createFlippedIntBuffer(List<Vector3> data) {
-		IntBuffer intBuffer = createIntBuffer(data.size() * 3);
+		IntBuffer intBuffer = BufferUtils.createIntBuffer(data.size() * 3);
 		
-		for (int i = 0; i < data.size(); i++) {
-			intBuffer.put(new int[] { (int) data.get(i).x, (int) data.get(i).y, (int) data.get(i).z });
-		}
+		for(Vector3 v : data)
+			intBuffer.put(new int[] { (int) v.x, (int) v.y, (int) v.z });
+
 		intBuffer.flip();
 		
 		return intBuffer;

@@ -15,7 +15,9 @@ public class Game {
 	public Shader shader;
 	public Model model;
 	
-	private float tick = 1, mainBunnyY = 0, mainBunnyX = 0;
+	public float tick = 1, x = 0, y = 0;
+	
+	public boolean isProjected = false;
 	
 	public void load() { 
 		transform = new Transform();
@@ -40,45 +42,51 @@ public class Game {
 		}
 		
 		if(Keyboard.isKeyDown(Keyboard.KEY_UP)) {
-			mainBunnyY += 0.01f;
+			y += 0.01f;
 		}
 		
 		if(Keyboard.isKeyDown(Keyboard.KEY_DOWN)) {
-			mainBunnyY -= 0.01f;
+			y -= 0.01f;
 		}
 		
 		if(Keyboard.isKeyDown(Keyboard.KEY_LEFT)) {
-			mainBunnyX -= 0.01f;
+			x -= 0.01f;
 		}
 		
 		if(Keyboard.isKeyDown(Keyboard.KEY_RIGHT)) {
-			mainBunnyX += 0.01f;
+			x += 0.01f;
 		}
 		
 		if(Keyboard.isKeyDown(Keyboard.KEY_R)) {
-			mainBunnyY = 0;
-			mainBunnyX = 0;
+			y = 0;
+			x = 0;
 		}
 		
 		while(Keyboard.next()) {
 			if(Keyboard.isKeyDown(Keyboard.KEY_SPACE)) {
-				tick += 10;
+				if(isProjected)
+					isProjected = false;
+				else 
+					isProjected = true;
 			}
 		}
 	}
 	
 	public void update() {
 		input();
-		glClearColor((float) Math.sin((tick / 30)), (float) Math.sin((tick / 30) + 1), (float) Math.sin((tick / 30) + 2), 1);
-		
 		tick++;
 		
-		//CONTROLLED BUNNY CODE
-		transform.translation = new Vector3(mainBunnyX, mainBunnyY, 0.5f);
-		transform.rotation = new Vector3(-mainBunnyY * 300, 0, mainBunnyX * 300);
-		transform.scale = new Vector3(0.1f, 0.1f, 0.1f);
+		glClearColor((float) Math.sin((tick / 30)), (float) Math.sin((tick / 30) + 1), (float) Math.sin((tick / 30) + 2), 1);
 		
-		shader.setUniformMat4("uniformPosition", transform.getProjectedTransformation());
+		transform.translation = new Vector3(x, y, 0.2f);
+		transform.rotation = new Vector3(0, x * 300, 0);
+		transform.scale = new Vector3(0.05f, 0.05f, 0.05f);
+		
+		if(isProjected)
+			shader.setUniformMat4("uniformPosition", transform.getProjectedTransformation());
+		else
+			shader.setUniformMat4("uniformPosition", transform.getTransformation());
+		
 		shader.setUniformVec3("uniformColor", new Vector3((float) Math.sin((tick / 30) - 4) + 1, (float) Math.sin((tick / 30) + 5) + 1, (float) Math.sin((tick / 30) + 6) + 1));
 		shader.bind();
 		

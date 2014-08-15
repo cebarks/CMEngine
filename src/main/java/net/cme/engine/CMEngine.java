@@ -17,7 +17,7 @@ import org.lwjgl.opengl.PixelFormat;
 
 public class CMEngine implements Runnable {
 
-	public static final String TITLE = "ESC to quit | TAB for surpise | SPACE to skip | ARROWS for main bunny | R to reset bunny";
+	public static final String TITLE = "CMEngine v.01";
 	public static final int WIDTH = 800;
 	public static final int HEIGHT = 600;
 

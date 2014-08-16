@@ -9,9 +9,6 @@ public class Vector3 {
 	public float z;
 
 	public float length;
-	
-	public static final int SIZE = 3;
-
 	public Vector3(float x, float y, float z) {
 		this.x = x;
 		this.y = y;
@@ -29,6 +26,10 @@ public class Vector3 {
 
 	public Vector3 mult(Vector3 v) {
 		return new Vector3(x * v.x, y * v.y, z * v.z);
+	}
+
+	public Vector3 mult(float f) {
+		return new Vector3(x * f, y * f, z * f);
 	}
 
 	public Vector3 div(Vector3 v) {
@@ -54,6 +55,10 @@ public class Vector3 {
 		float crossZ = x * v.y - v.x * y;
 		return new Vector3(crossX, crossY, crossZ);
 	}
+	
+	public float dot(Vector3 v) {
+		return x * v.x + y * v.y + z * v.z;
+	}
 
 	public Vector3 invert() {
 		return new Vector3(z, -y, x);
@@ -61,5 +66,28 @@ public class Vector3 {
 
 	public Vector3 negative() {
 		return new Vector3(-x, -y, -z);
+	}
+	
+	public Vector3 rotate(float angle, Vector3 axis) {
+		
+		float sinHalfAngle = (float)Math.sin(Math.toRadians(angle / 2));
+		float cosHalfAngle = (float)Math.cos(Math.toRadians(angle / 2));
+		
+		float rotationX = axis.x * sinHalfAngle;
+		float rotationY = axis.y * sinHalfAngle;
+		float rotationZ = axis.z * sinHalfAngle;
+		
+		float rotationW = cosHalfAngle;
+		
+		Quaternion rotation = new Quaternion(rotationX, rotationY, rotationZ, rotationW);
+		Quaternion conjugate = rotation.conjugate();
+		
+		Quaternion w = rotation.mult(this).mult(conjugate);
+		
+		x = w.x;
+		y = w.y;
+		z = w.z;
+		
+		return this; 
 	}
 }

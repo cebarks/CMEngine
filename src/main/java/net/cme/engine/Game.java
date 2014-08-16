@@ -7,18 +7,25 @@ import net.cme.model.Transform;
 import net.cme.util.Vector3;
 
 import org.lwjgl.input.Keyboard;
+import org.lwjgl.input.Mouse;
 
 public class Game {
 	
+	public Camera camera;
 	public Transform transform;
 	public Shader shader;
 	public Model[] models;
 	
-	public float tick = 1, x = 0, y = 0;
+	public float tick = 1, speed = 0.1f, test = 0;
 	
 	public void load() { 
+		camera = new Camera(new Vector3(0, 0, -5), new Vector3(0, 0, 1), new Vector3(0, 1, 0));
+		camera.rotateX(0);
+		camera.rotateY(0);
+
 		transform = new Transform();
-		transform.setProjection(0.1f, 1000, 800, 600, 70);
+		transform.setCamera(camera);
+		transform.setProjection(0.01f, 100, 800, 600, 68);
 
 		shader = new Shader();
 		shader.addProgram("basicVertex.glsl", GL_VERTEX_SHADER);
@@ -48,6 +55,8 @@ public class Game {
 		models[4] = new Model("triangle.obj");
 		models[4].setShader(shader);
 		models[4].bufferData();
+		
+		Mouse.setGrabbed(true);
 	}
 	
 	private void input() {
@@ -55,26 +64,23 @@ public class Game {
 			CMEngine.exit(0);
 		}
 		
-		if(Keyboard.isKeyDown(Keyboard.KEY_UP)) {
-			y += 0.1f;
+		if(Keyboard.isKeyDown(Keyboard.KEY_W)) {
+			camera.move(camera.getForward(), speed);
 		}
 		
-		if(Keyboard.isKeyDown(Keyboard.KEY_DOWN)) {
-			y -= 0.1f;
+		if(Keyboard.isKeyDown(Keyboard.KEY_S)) {
+			camera.move(camera.getBackward(), speed);
 		}
 		
-		if(Keyboard.isKeyDown(Keyboard.KEY_LEFT)) {
-			x -= 0.1f;
+		if(Keyboard.isKeyDown(Keyboard.KEY_A)) {
+			camera.rotateY(-1);
 		}
 		
-		if(Keyboard.isKeyDown(Keyboard.KEY_RIGHT)) {
-			x += 0.1f;
+		if(Keyboard.isKeyDown(Keyboard.KEY_D)) {
+			camera.rotateY(1);
 		}
 		
-		if(Keyboard.isKeyDown(Keyboard.KEY_R)) {
-			y = 0;
-			x = 0;
-		}
+		camera.rotateX(Mouse.getDY());
 	}
 	
 	public void update() {
@@ -85,8 +91,7 @@ public class Game {
 		tick++;		
 		
 		for(int i = 0; i < 10; i++) {
-			transform.translation = new Vector3((((i - 5) * 2) + 2) - x, -1, -y + 10);
-			transform.rotation = new Vector3(0, tick, 0);
+			//transform.translation = new Vector3((i - 5), 0, 0);
 			transform.scale = new Vector3(0.4f, 0.4f, 0.4f);
 			
 			shader.setUniformMat4("uniformPosition", transform.getProjectedTransformation());
@@ -99,6 +104,7 @@ public class Game {
 	}
 
 	public void exit() {
-		
+		for(Model m : models)
+			m.destroy();
 	}
 }

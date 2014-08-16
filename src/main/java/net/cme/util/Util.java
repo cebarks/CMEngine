@@ -47,9 +47,10 @@ public class Util {
 
 	public static FloatBuffer createFlippedFloatBuffer(List<Vector3> data) {
 		FloatBuffer floatBuffer = BufferUtils.createFloatBuffer(data.size() * 3);
-		
-		for (Vector3 v : data)
-			floatBuffer.put(new float[] { v.x, v.y, v.z });
+
+		for(int i = 0; i < data.size(); i ++) {
+			floatBuffer.put(new float[] {data.get(i).x, data.get(i).y, data.get(i).z});
+		}
 
 		floatBuffer.flip();
 		
@@ -59,8 +60,9 @@ public class Util {
 	public static IntBuffer createFlippedIntBuffer(List<Vector3> data) {
 		IntBuffer intBuffer = BufferUtils.createIntBuffer(data.size() * 3);
 
-		for(Vector3 v : data)
-			intBuffer.put(new int[] { (int) v.x, (int) v.y, (int) v.z });
+		for(int i = 0; i < data.size(); i ++) {
+			intBuffer.put(new int[] {(int) data.get(i).x, (int) data.get(i).y, (int) data.get(i).z});
+		}
 
 		intBuffer.flip();
 		

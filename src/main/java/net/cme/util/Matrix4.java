@@ -128,7 +128,7 @@ public class Matrix4 {
 		ry.matrix[3][2] = 0;
 		ry.matrix[3][3] = 1;
 
-		matrix = rz.mul(ry.mul(rx)).getMatrix();
+		matrix = rz.mult(ry.mult(rx)).getMatrix();
 
 		return this;
 	}
@@ -179,8 +179,38 @@ public class Matrix4 {
 		
 		return this;
 	}
+	
+	public Matrix4 initCamera(Vector3 forward, Vector3 up) {
 
-	public Matrix4 mul(Matrix4 r) {
+		Vector3 f = forward.normalize();
+		
+		Vector3 r = up.normalize();
+		
+		r = r.cross(f);
+		
+		Vector3 u = f.cross(r);
+
+		matrix[0][0] = r.x;
+		matrix[0][1] = r.y;
+		matrix[0][2] = r.z;
+		matrix[0][3] = 0;
+		matrix[1][0] = u.x;
+		matrix[1][1] = u.y;
+		matrix[1][2] = u.z;
+		matrix[1][3] = 0;
+		matrix[2][0] = f.x;
+		matrix[2][1] = f.y;
+		matrix[2][2] = f.z;
+		matrix[2][3] = 0;
+		matrix[3][0] = 0;
+		matrix[3][1] = 0;
+		matrix[3][2] = 0;
+		matrix[3][3] = 1;
+
+		return this;
+	}
+
+	public Matrix4 mult(Matrix4 r) {
 		Matrix4 res = new Matrix4();
 
 		for (int i = 0; i < 4; i++) {

@@ -20,7 +20,7 @@ public class CMEngine implements Runnable {
 	public static final int WIDTH = 800;
 	public static final int HEIGHT = 600;
 
-	public boolean isRunning = false, isWireframe = false;
+	public boolean isRunning = false;
 	
 	public static final Logger LOGGER = LogManager.getLogger(CMEngine.class);
 	

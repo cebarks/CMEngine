@@ -1,6 +1,6 @@
 package net.cme.engine;
-import static org.lwjgl.opengl.GL20.GL_FRAGMENT_SHADER;
-import static org.lwjgl.opengl.GL20.GL_VERTEX_SHADER;
+import static org.lwjgl.opengl.GL11.*;
+import static org.lwjgl.opengl.GL20.*;
 import net.cme.model.Model;
 import net.cme.model.Shader;
 import net.cme.model.Transform;
@@ -64,11 +64,11 @@ public class Game {
 		}
 		
 		if(Keyboard.isKeyDown(Keyboard.KEY_LEFT)) {
-			x -= 0.01f;
+			x -= 0.1f;
 		}
 		
 		if(Keyboard.isKeyDown(Keyboard.KEY_RIGHT)) {
-			x += 0.01f;
+			x += 0.1f;
 		}
 		
 		if(Keyboard.isKeyDown(Keyboard.KEY_R)) {
@@ -80,11 +80,13 @@ public class Game {
 	public void update() {
 		input();
 
+		glClearColor(0.5f, 0.5f, 1, 1);
+		
 		tick++;		
 		
 		for(int i = 0; i < 10; i++) {
-			transform.translation = new Vector3(((i - 5) * 2) + 2, y - 1, 10);
-			transform.rotation = new Vector3(0, x * 300, 0);
+			transform.translation = new Vector3((((i - 5) * 2) + 2) - x, -1, -y + 10);
+			transform.rotation = new Vector3(0, tick, 0);
 			transform.scale = new Vector3(0.4f, 0.4f, 0.4f);
 			
 			shader.setUniformMat4("uniformPosition", transform.getProjectedTransformation());

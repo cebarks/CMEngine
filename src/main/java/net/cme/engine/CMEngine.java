@@ -20,7 +20,7 @@ public class CMEngine implements Runnable {
 	public static final int WIDTH = 800;
 	public static final int HEIGHT = 600;
 
-	public boolean running = false;
+	public boolean isRunning = false, isWireframe = false;
 	
 	public static final Logger LOGGER = LogManager.getLogger(CMEngine.class);
 	
@@ -34,7 +34,7 @@ public class CMEngine implements Runnable {
 
 	public void run() {
 		
-		running = true;
+		isRunning = true;
 
 		try {
 			Display.setDisplayMode(new DisplayMode(WIDTH, HEIGHT));
@@ -49,7 +49,7 @@ public class CMEngine implements Runnable {
 		
 		game.load();
 
-		while (running == true) {
+		while (isRunning == true) {
 			glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 			glEnable(GL_DEPTH_TEST);
 			

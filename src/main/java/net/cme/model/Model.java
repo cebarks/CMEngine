@@ -64,6 +64,7 @@ public class Model {
 					normalList.add(new Vector3(Float.valueOf(tokens[1]), Float.valueOf(tokens[2]), Float.valueOf(tokens[3])));
 					
 				} else if (tokens[0].equals("f")) {	
+					
 						if(tokens[1].split("/").length == 1) {
 							faceList.add(new Face(
 									new Vector3(Float.parseFloat(tokens[1].split("/")[0]) - 1, Float.parseFloat((tokens[2]).split("/")[0]) - 1, Float.parseFloat((tokens[3]).split("/")[0]) - 1),
@@ -107,6 +108,7 @@ public class Model {
 		glEnableVertexAttribArray(0);
 
 		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, iboID);
+
 		glDrawElements(GL_TRIANGLES, faceList.size() * 3, GL_UNSIGNED_INT, 0);
 	
 		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);

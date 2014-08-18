@@ -32,7 +32,7 @@ public class Camera {
 		Vector3 hAxis = yAxis.cross(forward);
 		hAxis.normalize();
 		
-		forward.rotate(-angle, hAxis);
+		forward.rotate(angle, hAxis);
 		forward.normalize();
 		
 		up = forward.cross(hAxis);

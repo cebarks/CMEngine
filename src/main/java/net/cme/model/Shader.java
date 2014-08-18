@@ -108,6 +108,6 @@ public class Shader {
 	}
 	
 	public void setUniformMat4(String name, Matrix4 value) {
-		glUniformMatrix4(uniforms.get(name), true, Matrix4.createFlippedFloatBuffer(value));
+		glUniformMatrix4(uniforms.get(name), true, Util.createFlippedFloatBuffer(value));
 	}
 }

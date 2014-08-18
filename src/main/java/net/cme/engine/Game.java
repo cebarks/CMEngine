@@ -80,7 +80,13 @@ public class Game {
 			camera.rotateY(1);
 		}
 		
-		camera.rotateX(Mouse.getDY());
+		if(Keyboard.isKeyDown(Keyboard.KEY_Q)) {
+			camera.rotateX(-1);
+		}
+		
+		if(Keyboard.isKeyDown(Keyboard.KEY_E)) {
+			camera.rotateX(1);
+		}
 	}
 	
 	public void update() {
@@ -91,7 +97,7 @@ public class Game {
 		tick++;		
 		
 		for(int i = 0; i < 10; i++) {
-			//transform.translation = new Vector3((i - 5), 0, 0);
+			transform.translation = new Vector3((i - 5), 0, 0);
 			transform.scale = new Vector3(0.4f, 0.4f, 0.4f);
 			
 			shader.setUniformMat4("uniformPosition", transform.getProjectedTransformation());

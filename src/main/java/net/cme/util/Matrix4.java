@@ -12,17 +12,17 @@ public class Matrix4 {
 		matrix[0][1] = 0;
 		matrix[0][2] = 0;
 		matrix[0][3] = 0;
-		
+
 		matrix[1][0] = 0;
 		matrix[1][1] = 1;
 		matrix[1][2] = 0;
 		matrix[1][3] = 0;
-		
+
 		matrix[2][0] = 0;
 		matrix[2][1] = 0;
 		matrix[2][2] = 1;
 		matrix[2][3] = 0;
-		
+
 		matrix[3][0] = 0;
 		matrix[3][1] = 0;
 		matrix[3][2] = 0;
@@ -30,23 +30,23 @@ public class Matrix4 {
 
 		return this;
 	}
-	
+
 	public Matrix4 initTranslation(float x, float y, float z) {
 		matrix[0][0] = 1;
 		matrix[0][1] = 0;
 		matrix[0][2] = 0;
 		matrix[0][3] = x;
-		
+
 		matrix[1][0] = 0;
 		matrix[1][1] = 1;
 		matrix[1][2] = 0;
 		matrix[1][3] = y;
-		
+
 		matrix[2][0] = 0;
 		matrix[2][1] = 0;
 		matrix[2][2] = 1;
 		matrix[2][3] = z;
-		
+
 		matrix[3][0] = 0;
 		matrix[3][1] = 0;
 		matrix[3][2] = 0;
@@ -54,7 +54,7 @@ public class Matrix4 {
 
 		return this;
 	}
-	
+
 	public Matrix4 initRotation(float x, float y, float z) {
 		Matrix4 rx = new Matrix4();
 		Matrix4 ry = new Matrix4();
@@ -68,17 +68,17 @@ public class Matrix4 {
 		rz.matrix[0][1] = -(float) Math.sin(z);
 		rz.matrix[0][2] = 0;
 		rz.matrix[0][3] = 0;
-		
+
 		rz.matrix[1][0] = (float) Math.sin(z);
 		rz.matrix[1][1] = (float) Math.cos(z);
 		rz.matrix[1][2] = 0;
 		rz.matrix[1][3] = 0;
-		
+
 		rz.matrix[2][0] = 0;
 		rz.matrix[2][1] = 0;
 		rz.matrix[2][2] = 1;
 		rz.matrix[2][3] = 0;
-		
+
 		rz.matrix[3][0] = 0;
 		rz.matrix[3][1] = 0;
 		rz.matrix[3][2] = 0;
@@ -88,17 +88,17 @@ public class Matrix4 {
 		rx.matrix[0][1] = 0;
 		rx.matrix[0][2] = 0;
 		rx.matrix[0][3] = 0;
-		
+
 		rx.matrix[1][0] = 0;
 		rx.matrix[1][1] = (float) Math.cos(x);
 		rx.matrix[1][2] = -(float) Math.sin(x);
 		rx.matrix[1][3] = 0;
-		
+
 		rx.matrix[2][0] = 0;
 		rx.matrix[2][1] = (float) Math.sin(x);
 		rx.matrix[2][2] = (float) Math.cos(x);
 		rx.matrix[2][3] = 0;
-		
+
 		rx.matrix[3][0] = 0;
 		rx.matrix[3][1] = 0;
 		rx.matrix[3][2] = 0;
@@ -108,17 +108,17 @@ public class Matrix4 {
 		ry.matrix[0][1] = 0;
 		ry.matrix[0][2] = -(float) Math.sin(y);
 		ry.matrix[0][3] = 0;
-		
+
 		ry.matrix[1][0] = 0;
 		ry.matrix[1][1] = 1;
 		ry.matrix[1][2] = 0;
 		ry.matrix[1][3] = 0;
-		
+
 		ry.matrix[2][0] = (float) Math.sin(y);
 		ry.matrix[2][1] = 0;
 		ry.matrix[2][2] = (float) Math.cos(y);
 		ry.matrix[2][3] = 0;
-		
+
 		ry.matrix[3][0] = 0;
 		ry.matrix[3][1] = 0;
 		ry.matrix[3][2] = 0;
@@ -149,13 +149,13 @@ public class Matrix4 {
 
 		return this;
 	}
-	
+
 	public Matrix4 initProjection(float zNear, float zFar, float width, float height, float fov) {
-		
-		float aspectRatio = width/height;
+
+		float aspectRatio = width / height;
 		float tanHalfFOV = (float) Math.tan(Math.toRadians(fov / 2));
 		float zRange = zNear - zFar;
-		
+
 		matrix[0][0] = 1.0f / (tanHalfFOV * aspectRatio);
 		matrix[0][1] = 0;
 		matrix[0][2] = 0;
@@ -172,18 +172,18 @@ public class Matrix4 {
 		matrix[3][1] = 0;
 		matrix[3][2] = 1;
 		matrix[3][3] = 0;
-		
+
 		return this;
 	}
-	
+
 	public Matrix4 initCamera(Vector forward, Vector up) {
 
 		Vector f = forward.normalize();
-		
+
 		Vector r = up.normalize();
-		
+
 		r = r.cross(f);
-		
+
 		Vector u = f.cross(r);
 
 		matrix[0][0] = r.x;

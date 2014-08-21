@@ -13,17 +13,17 @@ import net.cme.model.Face;
 import org.lwjgl.BufferUtils;
 
 public class Util {
-	
+
 	public static String[] removeEmptyStrings(String[] data) {
 		ArrayList<String> result = new ArrayList<String>();
-		
+
 		for (int i = 0; i < data.length; i++)
 			if (!data[i].equals(""))
 				result.add(data[i]);
-		
+
 		String[] res = new String[result.size()];
 		result.toArray(res);
-		
+
 		return res;
 	}
 
@@ -49,41 +49,42 @@ public class Util {
 	public static FloatBuffer createFlippedVertexBuffer(List<Vector> data) {
 		FloatBuffer floatBuffer = BufferUtils.createFloatBuffer(data.size() * 3);
 
-		for(Vector v : data) {
-			if(v.SIZE == 3)
-				floatBuffer.put(new float[] {v.x, v.y, v.z});
+		for (Vector v : data) {
+			if (v.SIZE == 3)
+				floatBuffer.put(new float[] { v.x, v.y, v.z });
 			else
-				floatBuffer.put(new float[] {v.x, v.y});
+				floatBuffer.put(new float[] { v.x, v.y });
 		}
 
 		floatBuffer.flip();
-		
+
 		return floatBuffer;
 	}
-	
+
 	public static IntBuffer createFlippedFaceBuffer(List<Face> data) {
 		IntBuffer intBuffer = BufferUtils.createIntBuffer(data.size() * 8);
 
-		for(Face f : data) intBuffer.put(new int[] {(int) f.verticies.x, (int) f.verticies.y, (int) f.verticies.z});
-		for(Face f : data) intBuffer.put(new int[] {(int) f.uv.x, (int) f.uv.y});
-		for(Face f : data) intBuffer.put(new int[] {(int) f.normal.x, (int) f.normal.y, (int) f.normal.z});
+		for (Face f : data)
+			intBuffer.put(new int[] { (int) f.verticies.x, (int) f.verticies.y, (int) f.verticies.z });
+		for (Face f : data)
+			intBuffer.put(new int[] { (int) f.uv.x, (int) f.uv.y });
+		for (Face f : data)
+			intBuffer.put(new int[] { (int) f.normal.x, (int) f.normal.y, (int) f.normal.z });
 
 		intBuffer.flip();
-		
-		
-		
+
 		return intBuffer;
 	}
-	
+
 	public static FloatBuffer createFlippedMatrixBuffer(Matrix4 value) {
 		FloatBuffer buffer = BufferUtils.createFloatBuffer(4 * 4);
-		
-		for(int i = 0; i < 4; i++)
-			for(int u = 0; u < 4; u++)
+
+		for (int i = 0; i < 4; i++)
+			for (int u = 0; u < 4; u++)
 				buffer.put(value.get(i, u));
-		
+
 		buffer.flip();
-		
+
 		return buffer;
 	}
 }

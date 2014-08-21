@@ -15,30 +15,31 @@ import org.lwjgl.opengl.DisplayMode;
 import org.lwjgl.opengl.PixelFormat;
 
 public class CMEngine implements Runnable {
-
-	public static final String TITLE = "CMEngine v.01";
-	public static final int WIDTH = 800;
-	public static final int HEIGHT = 600;
+	public final String title;
+	public final int width;
+	public final int height;
 
 	public boolean isRunning = false;
-	
+
 	public static final Logger LOGGER = LogManager.getLogger(CMEngine.class);
-	
-	public Game game = new Game();
-	
+
+	public Game game;
+
 	private Thread thread;
 
-	public CMEngine() {
+	public CMEngine(Game game, String title, int width, int height) {
+		this.title = title;
+		this.game = game;
+		this.width = width;
+		this.height = height;
+
 		thread = new Thread(this, "CMEngine-0");
 	}
 
 	public void run() {
-		
-		isRunning = true;
-
 		try {
-			Display.setDisplayMode(new DisplayMode(WIDTH, HEIGHT));
-			Display.setTitle(TITLE);
+			Display.setDisplayMode(new DisplayMode(width, height));
+			Display.setTitle(title);
 			Display.setVSyncEnabled(true);
 			PixelFormat pixelFormat = new PixelFormat(8, 8, 0, 8);
 			ContextAttribs contextAttribs = new ContextAttribs(3, 2).withProfileCore(true).withForwardCompatible(true);
@@ -46,21 +47,24 @@ public class CMEngine implements Runnable {
 		} catch (LWJGLException e) {
 			CMEngine.exitOnError(1, e);
 		}
-		
-		game.load();
+
+		isRunning = true;
+
+		game.initialize();
 
 		while (isRunning == true) {
 			glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 			glEnable(GL_DEPTH_TEST);
-			
-			game.update();
-			
+
+			game.update(0);
+			game.render();
+
 			Display.update();
 			Display.sync(60);
 		}
-		
-		game.exit();
-		
+
+		game.shutdown();
+
 		Display.destroy();
 		exit(0);
 	}

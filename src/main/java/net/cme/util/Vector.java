@@ -9,23 +9,23 @@ public class Vector {
 	public float z;
 
 	public float length;
-	
+
 	public final int SIZE;
-	
+
 	public Vector(float x, float y, float z) {
 		this.x = x;
 		this.y = y;
 		this.z = z;
-		
+
 		SIZE = 3;
 		length = length();
 	}
-	
+
 	public Vector(float x, float y) {
 		this.x = x;
 		this.y = y;
 		this.z = 0;
-		
+
 		SIZE = 2;
 		length = length();
 	}
@@ -65,7 +65,7 @@ public class Vector {
 		float crossZ = x * v.y - v.x * y;
 		return new Vector(crossX, crossY, crossZ).normalize();
 	}
-	
+
 	public float dot(Vector v) {
 		return x * v.x + y * v.y + z * v.z;
 	}
@@ -77,27 +77,27 @@ public class Vector {
 	public Vector negative() {
 		return new Vector(-x, -y, -z);
 	}
-	
+
 	public Vector rotate(float angle, Vector axis) {
-		
-		float sinHalfAngle = (float)Math.sin(Math.toRadians(angle / 2));
-		float cosHalfAngle = (float)Math.cos(Math.toRadians(angle / 2));
-		
+
+		float sinHalfAngle = (float) Math.sin(Math.toRadians(angle / 2));
+		float cosHalfAngle = (float) Math.cos(Math.toRadians(angle / 2));
+
 		float rotationX = axis.x * sinHalfAngle;
 		float rotationY = axis.y * sinHalfAngle;
 		float rotationZ = axis.z * sinHalfAngle;
-		
+
 		float rotationW = cosHalfAngle;
-		
+
 		Quaternion rotation = new Quaternion(rotationX, rotationY, rotationZ, rotationW);
 		Quaternion conjugate = rotation.conjugate();
-		
+
 		Quaternion w = rotation.mult(this).mult(conjugate);
-		
+
 		x = w.x;
 		y = w.y;
 		z = w.z;
-		
-		return this; 
+
+		return this;
 	}
 }

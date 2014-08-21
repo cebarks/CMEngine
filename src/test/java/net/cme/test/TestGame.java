@@ -53,7 +53,7 @@ public class TestGame extends Game {
 	}
 
 	public void update(float delta) {
-		input();
+		input(delta);
 
 		tick++;
 	}
@@ -78,33 +78,33 @@ public class TestGame extends Game {
 			m.destroy();
 	}
 
-	private void input() {
+	private void input(float delta) {
 		if (Keyboard.isKeyDown(Keyboard.KEY_ESCAPE)) {
 			CMEngine.exit(0);
 		}
 
 		if (Keyboard.isKeyDown(Keyboard.KEY_W)) {
-			camera.move(camera.getForward(), speed);
+			camera.move(camera.getForward(), speed * delta);
 		}
 
 		if (Keyboard.isKeyDown(Keyboard.KEY_S)) {
-			camera.move(camera.getBackward(), speed);
+			camera.move(camera.getBackward(), speed * delta);
 		}
 
 		if (Keyboard.isKeyDown(Keyboard.KEY_A)) {
-			camera.move(camera.getLeft(), speed);
+			camera.move(camera.getLeft(), speed * delta);
 		}
 
 		if (Keyboard.isKeyDown(Keyboard.KEY_D)) {
-			camera.move(camera.getRight(), speed);
+			camera.move(camera.getRight(), speed * delta);
 		}
 
 		if (Keyboard.isKeyDown(Keyboard.KEY_SPACE)) {
-			camera.move(camera.getUp(), speed);
+			camera.move(camera.getUp(), speed * delta);
 		}
 
 		if (Keyboard.isKeyDown(Keyboard.KEY_LSHIFT)) {
-			camera.move(camera.getDown(), speed);
+			camera.move(camera.getDown(), speed * delta);
 		}
 
 		camera.rotateX(Mouse.getDY() / 2);

@@ -1,25 +1,24 @@
 package net.cme.engine;
 
-import net.cme.util.Vector3;
+import net.cme.util.Vector;
 
 public class Camera {
-	public static final Vector3 yAxis = new Vector3(0, 1, 0);
+	public static final Vector yAxis = new Vector(0, 1, 0);
 	
-	private Vector3 position, forward, up;
+	private Vector position, forward, up;
 	
-	public Camera(Vector3 position, Vector3 forward, Vector3 up) {
+	public Camera(Vector position, Vector forward, Vector up) {
 		this.position = position;
 		this.forward = forward;
 		this.up = up;
 	}
 	
-	public void move(Vector3 direction, float speed) {
+	public void move(Vector direction, float speed) {
 		position = position.add(direction.mult(speed));
 	}
 	
 	public void rotateY(float angle) {
-		Vector3 hAxis = yAxis.cross(forward);
-		hAxis.normalize();
+		Vector hAxis = yAxis.cross(forward);
 		
 		forward.rotate(angle, yAxis);
 		forward.normalize();
@@ -29,8 +28,7 @@ public class Camera {
 	}
 	
 	public void rotateX(float angle) {
-		Vector3 hAxis = yAxis.cross(forward);
-		hAxis.normalize();
+		Vector hAxis = forward.cross(yAxis);
 		
 		forward.rotate(angle, hAxis);
 		forward.normalize();
@@ -39,37 +37,37 @@ public class Camera {
 		up.normalize();
 	}
 	
-	public Vector3 getForward() {
+	public Vector getForward() {
 		return forward;
 	}
 	
-	public Vector3 getBackward() {
-		return new Vector3(-forward.x, -forward.y, -forward.z);
+	public Vector getBackward() {
+		return new Vector(-forward.x, -forward.y, -forward.z);
 	}
 	
-	public Vector3 getUp() {
+	public Vector getUp() {
 		return up;
 	}
 	
-	public Vector3 getDown() {
-		return new Vector3(-up.x, -up.y, -up.z);
+	public Vector getDown() {
+		return new Vector(-up.x, -up.y, -up.z);
 	}
 	
-	public Vector3 getLeft() {
-		Vector3 left = forward.cross(up);
+	public Vector getLeft() {
+		Vector left = forward.cross(up);
 		left.normalize();
 		
 		return left;
 	}
 	
-	public Vector3 getRight() {
-		Vector3 right = up.cross(forward);
+	public Vector getRight() {
+		Vector right = up.cross(forward);
 		right.normalize();
 		
 		return right;
 	}
 	
-	public Vector3 getPosition() {
+	public Vector getPosition() {
 		return position;
 	}
 }

@@ -1,6 +1,5 @@
 package net.cme.util;
 
-
 public class Matrix4 {
 	private float[][] matrix;
 
@@ -177,15 +176,15 @@ public class Matrix4 {
 		return this;
 	}
 	
-	public Matrix4 initCamera(Vector3 forward, Vector3 up) {
+	public Matrix4 initCamera(Vector forward, Vector up) {
 
-		Vector3 f = forward.normalize();
+		Vector f = forward.normalize();
 		
-		Vector3 r = up.normalize();
+		Vector r = up.normalize();
 		
 		r = r.cross(f);
 		
-		Vector3 u = f.cross(r);
+		Vector u = f.cross(r);
 
 		matrix[0][0] = r.x;
 		matrix[0][1] = r.y;

@@ -1,4 +1,4 @@
-package net.cme.model;
+package net.cme.shader;
 
 import static org.lwjgl.opengl.GL11.GL_FALSE;
 import static org.lwjgl.opengl.GL20.GL_COMPILE_STATUS;
@@ -27,7 +27,7 @@ import java.util.HashMap;
 import net.cme.engine.CMEngine;
 import net.cme.util.Matrix4;
 import net.cme.util.Util;
-import net.cme.util.Vector3;
+import net.cme.util.Vector;
 
 import org.lwjgl.LWJGLException;
 
@@ -103,11 +103,11 @@ public class Shader {
 		glUniform1f(uniforms.get(name), value);
 	}
 	
-	public void setUniformVec3(String name, Vector3 value) {
+	public void setUniformVec3(String name, Vector value) {
 		glUniform3f(uniforms.get(name), value.x, value.y, value.z);
 	}
 	
 	public void setUniformMat4(String name, Matrix4 value) {
-		glUniformMatrix4(uniforms.get(name), true, Util.createFlippedFloatBuffer(value));
+		glUniformMatrix4(uniforms.get(name), true, Util.createFlippedMatrixBuffer(value));
 	}
 }

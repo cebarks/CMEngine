@@ -31,7 +31,7 @@ public class Quaternion {
 		return new Quaternion(x_, y_, z_, w_);
 	}
 	
-	public Quaternion mult(Vector3 r) {
+	public Quaternion mult(Vector r) {
 		float w_ = -x * r.x - y * r.y - z * r.z;
 		float x_ = w * r.x + y * r.z - z * r.y;
 		float y_ = w * r.y + z * r.x - x * r.z;

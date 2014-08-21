@@ -8,6 +8,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import net.cme.engine.CMEngine;
+import net.cme.model.Face;
 
 import org.lwjgl.BufferUtils;
 
@@ -31,7 +32,7 @@ public class Util {
 		BufferedReader shaderReader = null;
 
 		try {
-			shaderReader = new BufferedReader(new FileReader("src/main/resources/" + location));
+			shaderReader = new BufferedReader(new FileReader("src/main/resources/shaders/" + location));
 			String line;
 
 			while ((line = shaderReader.readLine()) != null) {
@@ -45,11 +46,14 @@ public class Util {
 		return shaderSource.toString();
 	}
 
-	public static FloatBuffer createFlippedFloatBuffer(List<Vector3> data) {
+	public static FloatBuffer createFlippedVertexBuffer(List<Vector> data) {
 		FloatBuffer floatBuffer = BufferUtils.createFloatBuffer(data.size() * 3);
 
-		for(int i = 0; i < data.size(); i ++) {
-			floatBuffer.put(new float[] {data.get(i).x, data.get(i).y, data.get(i).z});
+		for(Vector v : data) {
+			if(v.SIZE == 3)
+				floatBuffer.put(new float[] {v.x, v.y, v.z});
+			else
+				floatBuffer.put(new float[] {v.x, v.y});
 		}
 
 		floatBuffer.flip();
@@ -57,8 +61,21 @@ public class Util {
 		return floatBuffer;
 	}
 	
+	public static IntBuffer createFlippedFaceBuffer(List<Face> data) {
+		IntBuffer intBuffer = BufferUtils.createIntBuffer(data.size() * 8);
+
+		for(Face f : data) intBuffer.put(new int[] {(int) f.verticies.x, (int) f.verticies.y, (int) f.verticies.z});
+		for(Face f : data) intBuffer.put(new int[] {(int) f.uv.x, (int) f.uv.y});
+		for(Face f : data) intBuffer.put(new int[] {(int) f.normal.x, (int) f.normal.y, (int) f.normal.z});
+
+		intBuffer.flip();
+		
+		
+		
+		return intBuffer;
+	}
 	
-	public static FloatBuffer createFlippedFloatBuffer(Matrix4 value) {
+	public static FloatBuffer createFlippedMatrixBuffer(Matrix4 value) {
 		FloatBuffer buffer = BufferUtils.createFloatBuffer(4 * 4);
 		
 		for(int i = 0; i < 4; i++)
@@ -68,17 +85,5 @@ public class Util {
 		buffer.flip();
 		
 		return buffer;
-	}
-
-	public static IntBuffer createFlippedIntBuffer(List<Vector3> data) {
-		IntBuffer intBuffer = BufferUtils.createIntBuffer(data.size() * 3);
-
-		for(int i = 0; i < data.size(); i ++) {
-			intBuffer.put(new int[] {(int) data.get(i).x, (int) data.get(i).y, (int) data.get(i).z});
-		}
-
-		intBuffer.flip();
-		
-		return intBuffer;
 	}
 }

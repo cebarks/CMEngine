@@ -2,17 +2,17 @@ package net.cme.model;
 
 import net.cme.engine.Camera;
 import net.cme.util.Matrix4;
-import net.cme.util.Vector3;
+import net.cme.util.Vector;
 
 public class Transform {
 	private Camera camera;
 	private float zNear, zFar, width, height, fov;
-	public Vector3 translation, rotation, scale;
+	public Vector translation, rotation, scale;
 	
 	public Transform() {
-		translation = new Vector3(0, 0, 0);
-		rotation = new Vector3(0, 0, 0);
-		scale = new Vector3(0, 0, 0);
+		translation = new Vector(0, 0, 0);
+		rotation = new Vector(0, 0, 0);
+		scale = new Vector(1, 1, 1);
 	}
 	
 	public Matrix4 getTransformation() {

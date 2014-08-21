@@ -32,7 +32,7 @@ public class Util {
 		BufferedReader shaderReader = null;
 
 		try {
-			shaderReader = new BufferedReader(new FileReader("src/main/resources/shaders/" + location));
+			shaderReader = new BufferedReader(new FileReader(ResourceLoader.getResource("shaders/" + location)));
 			String line;
 
 			while ((line = shaderReader.readLine()) != null) {

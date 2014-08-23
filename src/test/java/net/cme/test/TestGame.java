@@ -110,4 +110,9 @@ public class TestGame extends Game {
 		camera.rotateX(Mouse.getDY() / 2);
 		camera.rotateY(Mouse.getDX() / 2);
 	}
+
+	public static void main(String[] args) {
+		CMEngine engine = new CMEngine(new TestGame(), "TestGame", 800, 600);
+		engine.start();
+	}
 }

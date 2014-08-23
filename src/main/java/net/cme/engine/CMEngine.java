@@ -29,7 +29,7 @@ public class CMEngine implements Runnable {
 	private int fps;
 
 	public CMEngine(Game game, String title, int width, int height) {
-		this.title = title;
+		this.title = String.format("CMEngine %s | %s", Version.getFullVersion(), title);
 		this.game = game;
 		this.width = width;
 		this.height = height;
@@ -70,7 +70,7 @@ public class CMEngine implements Runnable {
 				fps = frames;
 				frames = 0;
 				lastFPS = currentTime;
-				Display.setTitle("Delta: " + delta + " FPS: " + fps + " FrameTime: " + frameTime);
+				//Display.setTitle("Delta: " + delta + " FPS: " + fps + " FrameTime: " + frameTime);
 			}
 
 			game.update(delta);

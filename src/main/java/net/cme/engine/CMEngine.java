@@ -26,7 +26,8 @@ public class CMEngine implements Runnable {
 	public Game game;
 
 	private Thread thread;
-	private int fps;
+	private DebugStats debugStats;
+	private DebugFrame debugFrame;
 
 	public CMEngine(Game game, String title, int width, int height) {
 		this.title = String.format("CMEngine %s | %s", Version.getFullVersion(), title);
@@ -35,6 +36,8 @@ public class CMEngine implements Runnable {
 		this.height = height;
 
 		thread = new Thread(this, "CMEngine-0");
+		debugStats = new DebugStats(this);
+		debugFrame = new DebugFrame(debugStats);
 	}
 
 	public void run() {
@@ -61,19 +64,23 @@ public class CMEngine implements Runnable {
 		while (isRunning) {
 			long currentTime = System.nanoTime();
 			float delta = (currentTime - lastFrame) / (float) goalRate;
-			float frameTime = (currentTime - lastFrame) / 1000000;
+			long frameTime = (currentTime - lastFrame) / 1000000L;
 			lastFrame = currentTime;
 
 			frames++;
 
 			if (currentTime - lastFPS >= 1000000000) {
-				fps = frames;
+				debugStats.fps = frames;
+				debugStats.delta = delta;
+				debugStats.frameTime = frameTime;
+				debugFrame.update();
 				frames = 0;
 				lastFPS = currentTime;
-				//Display.setTitle("Delta: " + delta + " FPS: " + fps + " FrameTime: " + frameTime);
 			}
 
 			game.update(delta);
+
+			debugFrame.update();
 
 			glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 			glEnable(GL_DEPTH_TEST);

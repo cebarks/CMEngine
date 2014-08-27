@@ -11,7 +11,7 @@ public class Timer {
 	public static Timer start() {
 		return new Timer();
 	}
-	
+
 	public long stop() {
 		return System.currentTimeMillis() - startTime;
 	}

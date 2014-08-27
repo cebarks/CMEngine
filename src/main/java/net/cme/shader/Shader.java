@@ -83,30 +83,30 @@ public class Shader {
 			CMEngine.exitOnError(1, new LWJGLException());
 		}
 	}
-	
+
 	public void addUniform(String uniform) {
 		int uniformLocation = glGetUniformLocation(program, uniform);
-		
-		if(uniformLocation == 0xFFFFFFFF) {
+
+		if (uniformLocation == 0xFFFFFFFF) {
 			CMEngine.LOGGER.error("Could not load uniform " + uniform);
 			CMEngine.exitOnError(1, new Exception());
 		}
-		
+
 		uniforms.put(uniform, uniformLocation);
 	}
-	
+
 	public void setUniformInt(String name, int value) {
 		glUniform1i(uniforms.get(name), value);
 	}
-	
+
 	public void setUniformFloat(String name, float value) {
 		glUniform1f(uniforms.get(name), value);
 	}
-	
+
 	public void setUniformVec3(String name, Vector value) {
 		glUniform3f(uniforms.get(name), value.x, value.y, value.z);
 	}
-	
+
 	public void setUniformMat4(String name, Matrix4 value) {
 		glUniformMatrix4(uniforms.get(name), true, Util.createFlippedMatrixBuffer(value));
 	}

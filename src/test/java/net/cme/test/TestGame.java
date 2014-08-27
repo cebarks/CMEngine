@@ -107,8 +107,13 @@ public class TestGame extends Game {
 			camera.move(camera.getDown(), speed * delta);
 		}
 
-		camera.rotateX(Mouse.getDY() / 2);
-		camera.rotateY(Mouse.getDX() / 2);
+		if (Keyboard.isKeyDown(Keyboard.KEY_M))
+			Mouse.setGrabbed(!Mouse.isGrabbed());
+
+		if (Mouse.isGrabbed()) {
+			camera.rotateX(Mouse.getDY() / 2);
+			camera.rotateY(Mouse.getDX() / 2);
+		}
 	}
 
 	public static void main(String[] args) {

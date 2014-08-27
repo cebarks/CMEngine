@@ -19,7 +19,7 @@ public class CMEngine implements Runnable {
 	public final int width;
 	public final int height;
 
-	public boolean isRunning = false;
+	public static boolean isRunning = false;
 
 	public static final Logger LOGGER = LogManager.getLogger(CMEngine.class);
 
@@ -28,6 +28,8 @@ public class CMEngine implements Runnable {
 	private Thread thread;
 	private DebugStats debugStats;
 	private DebugFrame debugFrame;
+
+	private static int exitStatus = 0;
 
 	public CMEngine(Game game, String title, int width, int height) {
 		this.title = String.format("CMEngine %s | %s", Version.getFullVersion(), title);
@@ -92,7 +94,7 @@ public class CMEngine implements Runnable {
 		game.shutdown();
 
 		Display.destroy();
-		exit(0);
+		System.exit(exitStatus);
 	}
 
 	public void start() {
@@ -101,11 +103,13 @@ public class CMEngine implements Runnable {
 
 	public static void exit(int status) {
 		LOGGER.info("Closing under status " + status);
-		System.exit(status);
+		isRunning = false;
+		exitStatus = status;
 	}
 
 	public static void exitOnError(int status, Exception e) {
 		LOGGER.fatal("Closing with errors under status " + status, e);
-		System.exit(status);
+		isRunning = false;
+		exitStatus = status;
 	}
 }
